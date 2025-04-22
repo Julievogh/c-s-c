@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
+/* Fonts */
+@font-face {
+  font-family: 'Recoleta';
+  src: url('/fonts/Recoleta-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Recoleta Alt';
+  src: url('/fonts/RecoletaAlt-Regular.ttf') format('truetype');
+  font-weight: 600;
+  font-style: bold;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Recoleta Alt Bold';
+  src: url('/fonts/RecoletaAlt-Bold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Dawning of a New Day';
+  src: url('/fonts/DawningofaNewDay.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Theme Variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: var(--color-soft-beige);
+  --foreground: var(--color-dark-espresso);
+
+  /* 🎨 Colors */
+  --color-pantone-2024: #fddbd3;
+  --color-pantone-2023: #FFD8CE;
+  --color-dark-espresso: #3d2623;
+  --color-warm-white: #f7f4f1;
+  --color-dark-green: #2b432f;
+  --color-light-green: #556b2f;
+  --color-deep-wine: #742c2b;
+  --color-soft-beige: #f2e2d4;
+  --color-terracotta: #d16d5c;
+  --color-sage-green: #b7c6ad;
+  --color-lighter-pantone: #fceae5;
+  --color-lighter-terracotta: #e8b2a3;
+  --color-golden: #D5A25F;
+
+  /* 🧵 Fonts */
+  --font-hero-family: "Recoleta Alt Bold", serif;
+  --font-display-family: "Recoleta", serif;
+  --font-subtitle-family: "Lora", serif;
+  --font-secondary-family: "Kaphama", cursive;
+  --font-body-family: "Karla", sans-serif;
+  --font-accent-family: 'Dawning of a New Day', cursive;
+
+  /* 📏 Font Sizes */
+  --font-h1: 64px;
+  --font-h2: 48px;
+  --font-h3: 32px;
+  --font-h4: 24px;
+  --font-body-size: 18px;
+  --font-accent-size: 54px;
+  --font-button-size: 16px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Base Styles */
+@layer base {
+  body {
+    font-family: var(--font-body-family);
+    font-size: var(--font-body-size);
+    background: var(--background);
+    color: var(--foreground);
+  }
+
+  h1 {
+    font-family: var(--font-hero-family);
+    font-size: var(--font-h1);
+  }
+
+  h2 {
+    font-family: var(--font-display-family);
+    font-size: var(--font-h2);
+  }
+
+  h3 {
+    font-family: var(--font-subtitle-family);
+    font-size: var(--font-h3);
+  }
+
+  h4 {
+    font-family: var(--font-display-family); /* Added missing font family */
+    font-size: var(--font-h4);
+  }
+
+  .font-accent {
+    font-family: var(--font-accent-family);
+    font-size: var(--font-accent-size);
+  }
+
+  .button {
+    font-family: var(--font-display-family);
+    font-size: var(--font-button-size);
+  }
+  
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Utilities */
+@layer utilities {
+  .btn {
+    @apply inline-block px-6 py-2 rounded-full font-medium transition-all;
+  }
+
+  .btn-primary {
+    @apply bg-[color:var(--color-light-green)] text-[color:var(--color-soft-beige)] hover:bg-[color:var(--color-dark-green)];
+  }
+
+  .btn-outline {
+    @apply border bg-[color:var(--color-light-green)] text-[color:var(--color-light-green)] bg-transparent hover:border-[color:var(--color-dark-green)] hover:text-[color:var(--color-dark-green)];
+  }
+
+  .btn-secondary {
+    @apply bg-[color:var(--color-golden)] text-[color:var(--color-soft-beige)] hover:bg-[color:var(--color-terracotta)];
+  }
+
+  .btn-secondary-outline {
+    @apply border bg-[color:var(--color-golden)] text-[color:var(--color-golden)] bg-transparent hover:border-[color:var(--color-terracotta)] hover:text-[color:var(--color-terracotta)];
+  }
+
+
+}
+
+@layer utilities {
+  .responsive-grid {
+    @apply grid gap-5 px-10; /* Default mobile */
+  }
+
+  /* For desktop (lg and up) */
+  @media (min-width: 1024px) {
+    .responsive-grid {
+      @apply grid-cols-12 gap-10 px-0; /* More columns and increased gap */
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground: var(--color-soft-beige);
+    --background: var(--color-dark-espresso);
+  }
 }
