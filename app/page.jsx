@@ -34,7 +34,7 @@ export default function Home() {
     <div>
     
       
-      <button className="btn btn-primary">CONTACT US</button>
+      <button className="btn btn-primary">WEBSHOP</button>
     </div>
   </nav>
 </header>
