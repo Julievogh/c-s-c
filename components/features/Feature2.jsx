@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export default function Feature2() {
-    return(   <section className="col-span-12 bg-[var(--color-pantone-2023)] py-16">
+    return(   <section className="col-span-12 bg-[var(--color-pantone-2023)] py-16 bg-[url('/imgs/ternetbg2.png')] bg-cover bg-no-repeat bg-center">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 px-6 max-w-7xl mx-auto items-center">
                 <div className="lg:col-span-6">
                   <Image

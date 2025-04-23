@@ -2,9 +2,9 @@ import Image from "next/image";
 
 export default function Story() { return( <section
     id="story"
-    className="col-span-12 lg:col-start-2 lg:col-span-10 story-bg"
+    className="col-span-12 lg:col-start-2 lg:col-span-10 story-bg md:my-6"
   >
-    <div className="relative max-w-4xl mx-auto text-center py-16 px-6 space-y-8">
+    <div className="relative max-w-4xl mx-auto text-center py-16 px-6 space-y-8 bg-[url('/imgs/ternetbg2.png')] bg-cover bg-no-repeat bg-center">
       <h2 className="font-display text-h2">The story</h2>
       <h3 className="font-display text-h3">More Than Just Food – A Cozy Invitation</h3>
       <p className="font-body">
