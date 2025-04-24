@@ -9,14 +9,14 @@ export default function Founder() { return(
                 alt="Founder"
                 width={500}
                 height={500}
-                className="rounded-full"
+                className="rounded-[20px]"
               />
             </div>
             <div className="lg:col-span-6">
               <h2 className="font-display text-h2 mb-4">Meet the founder</h2>
               <p className="font-accent mb-4">Come hungry, leave satisfied</p>
-              <h3 className="font-subtitle text-h3 mb-4">
-                <span>Juan</span> - The Chef Behind the Concept
+              <h3 className="font-subtitle text-h3 mb-4 ">
+                <span className="font-bold">Juan</span> - The Chef Behind the Concept
               </h3>
               <p className="font-body mb-4">
                 Juan is a chef from Los Angeles with a passion for blending tradition and innovation.
@@ -27,9 +27,10 @@ export default function Founder() { return(
               <p className="font-body mb-6">
                 Whether he’s slow-cooking a classic or reimagining a dish with a twist, Juan believes that food should spark connection.
               </p>
-              <p className="font-body">
-                His vision is simple: create shared experiences that feel personal, intimate, and delicious—like a dinner party with soul.
-              </p>
+              <p className="font-bold">
+                His vision is simple: </p>
+                <h4 className=" italic text-[var(--color-dark-green)]">create shared experiences that feel personal, intimate, and delicious—like a dinner party with soul.</h4>
+              
             </div>
           </div>
         </section>

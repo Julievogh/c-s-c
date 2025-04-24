@@ -1,27 +1,81 @@
+// components/Header.jsx
+
+'use client';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
+import MobileMenu from './MobileMenu';
 
-const Header = () => {
+export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-return (
-<header className="col-span-12 bg-[var(--color-warm-white)] py-6 shadow-lg fixed w-full z-50">
-          <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-            <div className="flex space-x-8">
-              <a href="#popup" className="uppercase">Pop-up Experience</a>
-              <a href="#fine-dining" className="uppercase">Fine-Dining</a>
+  // shrink header on scroll
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const headerClasses = [
+    'fixed w-full z-50 transition-all duration-300 bg-[var(--color-soft-beige)]',
+    scrolled ? 'py-2 shadow-md' : 'py-6 shadow-lg',
+  ].join(' ');
+
+  return (
+    <>
+      <header className={headerClasses}>
+        <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          {/* desktop left links */}
+          <div className="hidden md:flex space-x-8">
+            <Link href="#popup" className="uppercase">
+              Pop-up Experience
+            </Link>
+            <Link href="#fine-dining" className="uppercase">
+              Fine-Dining
+            </Link>
+          </div>
+
+          {/* logo */}
+          <Link href="/" className="flex-shrink-0">
+            <Image
+              src="/imgs/logo.svg"
+              alt="Cozy Social Club"
+              width={scrolled ? 120 : 160}
+              height={scrolled ? 120 : 160}
+            />
+          </Link>
+
+          {/* desktop right links */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link href="#your-event" className="uppercase">
+              Your Event
+            </Link>
+            <Link href="#story" className="uppercase">
+              The Story
+            </Link>
+            <Link href="/webshop" className="btn btn-primary uppercase">
+              Webshop
+            </Link>
+          </div>
+
+          {/* mobile hamburger */}
+          <button
+            className="md:hidden p-2"
+            onClick={() => setMenuOpen(open => !open)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          >
+            <div className="space-y-1">
+              <span className="block w-6 h-0.5 bg-gray-800"></span>
+              <span className="block w-6 h-0.5 bg-gray-800"></span>
+              <span className="block w-6 h-0.5 bg-gray-800"></span>
             </div>
-            <div>
-              <a href="#">
-                <Image src="/imgs/logo.svg" alt="Cozy Social Club" width={200} height={200} />
-              </a>
-            </div>
-            <div className="flex space-x-8">
-              <a href="#your-event" className="uppercase">Your Event</a>
-              <a href="#story" className="uppercase">The Story</a>
-            </div>
-            <button className="btn btn-primary uppercase">Webshop</button>
-          </nav>
-        </header>
-)
+          </button>
+        </nav>
+      </header>
+
+      {/* mobile slide-down */}
+      <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+    </>
+  );
 }
-
-        export default Header;

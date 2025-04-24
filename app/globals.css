@@ -61,7 +61,7 @@
   --font-accent-family: 'Dawning of a New Day', cursive;
 
   /* 📏 Font Sizes */
-  --font-h1: 64px;
+  --font-h1: 128px;
   --font-h2: 48px;
   --font-h3: 32px;
   --font-h4: 24px;
@@ -87,6 +87,7 @@
   h2 {
     font-family: var(--font-display-family);
     font-size: var(--font-h2);
+    font-weight: 800;
   }
 
   h3 {
@@ -102,6 +103,7 @@
   .font-accent {
     font-family: var(--font-accent-family);
     font-size: var(--font-accent-size);
+    color: var(--color-dark-green);
   }
 
   .button {

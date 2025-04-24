@@ -30,7 +30,12 @@ export default function Events() { return( <section id="popup" className="col-sp
                   </p>
                   <button className="btn btn-primary self-center">Sign Up</button>
                 </div>
+
+                
               </div>
             ))}
+            <div className="col-span-2 lg:col-span-4 flex justify-center items-center">
+            <button className="btn btn-secondary self-center mt-4">CALENDER</button>
+            </div>
           </div>
         </section>)}

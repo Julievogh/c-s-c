@@ -13,15 +13,15 @@ export default function Feature2() {
                   />
                 </div>
                 <div className="lg:col-span-6">
-                  <h3 className="font-display text-h2 mb-2">
+                  <h4 className="mb-2">
                     Experience the Magic of Connection
-                  </h3>
-                  <h4 className="font-subtitle text-h3 mb-4">
-                    Friends, family & colleagues
                   </h4>
+                  <h2 className="mb-4 text-[var(--color-espresso)] ">
+                    Friends, family & colleagues
+                  </h2>
                   <p className="font-body mb-6">
-                    Our amazing community is at the heart of Cozy Social Club. The connections we build—with our guests, team, and friends—make our work meaningful and inspire us to create unforgettable moments.
-                  </p>
+                  Our amazing community is at the heart of Cozy Social Club. The connections we build—with our guests, team, and friends—make our work meaningful and inspire us to create unforgettable moments.
+                  We believe in the power of people and the joy of shared experiences. Our approach is rooted in warmth and hospitality, from thoughtfully curated menus to our attentive, welcoming staff. Every detail is designed to reflect personality, comfort, and the magic of bringing people together.                  </p>
                   <button className="btn btn-secondary">Book</button>
                 </div>
               </div>
