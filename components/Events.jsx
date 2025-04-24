@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Button from "@/components/Button/page";
 
 export default function Events() { return( <section id="popup" className="col-span-12 py-16 px-6">
           <div className="text-center mb-8">
@@ -28,14 +29,14 @@ export default function Events() { return( <section id="popup" className="col-sp
                   <p className="font-body text-body mb-4 hidden sm:block">
                     Join us for a fun-filled pop-up experience! Expect delicious food, vibrant vibes, and memorable moments.
                   </p>
-                  <button className="btn btn-primary self-center">Sign Up</button>
+                  <Button variant="secondary">Sign Up</Button>
                 </div>
 
                 
               </div>
             ))}
             <div className="col-span-2 lg:col-span-4 flex justify-center items-center">
-            <button className="btn btn-secondary self-center mt-4">CALENDER</button>
+            <Button variant="outlinePrimary">CALENDER</Button>
             </div>
           </div>
         </section>)}

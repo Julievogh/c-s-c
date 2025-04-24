@@ -1,4 +1,5 @@
 import Image from "next/image"  
+import Button from "@/components/Button/page"
 
 export default function Feature1() { return(
 
@@ -10,7 +11,8 @@ export default function Feature1() { return(
             </h2>
             <p className="font-body mb-6">
             Cozy Social Club is a full-service event and hospitality brand dedicated to crafting warm, inviting experiences that bring people together. We create memorable gatherings with exceptional service, thoughtful details, and a welcoming atmosphere. Whether it’s an intimate get-together or a lively celebration, we ensure every event feels special, effortless, and truly cozy.            </p>
-            <button className="btn btn-primary">Contact Us</button>
+           
+            <Button variant="primary" >Contact Us</Button>
           </div>
           <div className="lg:col-span-6">
             <Image

@@ -2,32 +2,32 @@
 
 /* Fonts */
 @font-face {
-  font-family: 'Recoleta';
-  src: url('/fonts/Recoleta-Regular.ttf') format('truetype');
+  font-family: "Recoleta";
+  src: url("/fonts/Recoleta-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Recoleta Alt';
-  src: url('/fonts/RecoletaAlt-Regular.ttf') format('truetype');
+  font-family: "Recoleta Alt";
+  src: url("/fonts/RecoletaAlt-Regular.ttf") format("truetype");
   font-weight: 600;
   font-style: bold;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Recoleta Alt Bold';
-  src: url('/fonts/RecoletaAlt-Bold.ttf') format('truetype');
+  font-family: "Recoleta Alt Bold";
+  src: url("/fonts/RecoletaAlt-Bold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Dawning of a New Day';
-  src: url('/fonts/DawningofaNewDay.ttf') format('truetype');
+  font-family: "Dawning of a New Day";
+  src: url("/fonts/DawningofaNewDay.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
@@ -39,7 +39,7 @@
 
   /* 🎨 Colors */
   --color-pantone-2024: #fddbd3;
-  --color-pantone-2023: #FFD8CE;
+  --color-pantone-2023: #ffd8ce;
   --color-dark-espresso: #3d2623;
   --color-warm-white: #f7f4f1;
   --color-dark-green: #2b432f;
@@ -50,7 +50,7 @@
   --color-sage-green: #b7c6ad;
   --color-lighter-pantone: #fceae5;
   --color-lighter-terracotta: #e8b2a3;
-  --color-golden: #D5A25F;
+  --color-golden: #d5a25f;
 
   /* 🧵 Fonts */
   --font-hero-family: "Recoleta Alt Bold", serif;
@@ -58,7 +58,7 @@
   --font-subtitle-family: "Lora", serif;
   --font-secondary-family: "Kaphama", cursive;
   --font-body-family: "Karla", sans-serif;
-  --font-accent-family: 'Dawning of a New Day', cursive;
+  --font-accent-family: "Dawning of a New Day", cursive;
 
   /* 📏 Font Sizes */
   --font-h1: 128px;
@@ -100,6 +100,18 @@
     font-size: var(--font-h4);
   }
 
+  h5 {
+    font-family: var(--font-display-family);
+    font-size: var(--font-h5);
+  }
+
+  a {
+    font-family: var(--font-display-family);
+    font-size: var(--font-body-size);
+    color: var(--color-dark-green);
+    text-decoration: none;
+  }
+
   .font-accent {
     font-family: var(--font-accent-family);
     font-size: var(--font-accent-size);
@@ -110,7 +122,14 @@
     font-family: var(--font-display-family);
     font-size: var(--font-button-size);
   }
-  
+
+  .ig-handle {
+    font-family: var(--font-hero-family);
+    font-size: 2rem; /* 32px default, override if needed */
+    color: var(--color-dark-green);
+    font-weight: 800;
+    margin-bottom: 3rem;
+  }
 }
 
 /* Utilities */
@@ -134,8 +153,6 @@
   .btn-secondary-outline {
     @apply border bg-[color:var(--color-golden)] text-[color:var(--color-golden)] bg-transparent hover:border-[color:var(--color-terracotta)] hover:text-[color:var(--color-terracotta)];
   }
-
-
 }
 
 @layer utilities {
@@ -150,7 +167,6 @@
     }
   }
 }
-
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {

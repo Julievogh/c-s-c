@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Button from "@/components/Button/page";
 
 export default function Feature2() {
     return(   <section className="col-span-12 bg-[var(--color-pantone-2023)] py-16 bg-[url('/imgs/ternetbg2.png')] bg-cover bg-no-repeat bg-center">
@@ -22,7 +23,7 @@ export default function Feature2() {
                   <p className="font-body mb-6">
                   Our amazing community is at the heart of Cozy Social Club. The connections we build—with our guests, team, and friends—make our work meaningful and inspire us to create unforgettable moments.
                   We believe in the power of people and the joy of shared experiences. Our approach is rooted in warmth and hospitality, from thoughtfully curated menus to our attentive, welcoming staff. Every detail is designed to reflect personality, comfort, and the magic of bringing people together.                  </p>
-                  <button className="btn btn-secondary">Book</button>
+                  <Button variant="secondary" >Book</Button>
                 </div>
               </div>
             </section>)

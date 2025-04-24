@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Intro from "@/components/Intro";
@@ -12,6 +11,7 @@ import Events from "@/components/Events";
 import Founder from "@/components/Founder";
 import Story from "@/components/Story";
 import Socials from "@/components/Socials";
+import Button from "@/components/Button/page";
 
 import Footer from "@/components/Footer";
 
@@ -19,52 +19,46 @@ export default function Home() {
   return (
     <div className="grid-mobile grid-desktop">
       <main className="row-start-2">
-
-       
         {/* HEADER */}
         <Header />
 
         {/* HERO */}
-      <Hero />
+        <Hero />
 
         {/* INTRO */}
-      <Intro />
+        <Intro />
 
         {/* FEATURE 1 */}
 
         <Feature1 />
 
-       
-
         {/* FEATURE 2 */}
 
         <Feature2 />
-     
 
         {/* FEATURE 3 */}
 
         <Feature3 />
 
         {/* TESTIMONIAL */}
-       <Testimonial />
+        <Testimonial />
 
-      {/* EVENTS */}
-     <Events />
+        {/* EVENTS */}
+        <Events />
 
         {/* FOUNDER */}
 
-<Founder />
-
+        <Founder />
 
         {/* STORY */}
-       <Story />
+        <Story />
 
         {/* SOCIALS */}
 
         <Socials />
-       
-      <Footer />
-</main>
+
+        <Footer />
+      </main>
     </div>
   );
 }

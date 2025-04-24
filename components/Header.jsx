@@ -34,6 +34,7 @@ export default function Header() {
             <Link href="#fine-dining" className="uppercase">
               Fine-Dining
             </Link>
+            <Link href="/blog" className="uppercase">Blog</Link>
           </div>
 
           {/* logo */}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Button from "@/components/Button/page";
 
 export default function Feature3() { return( 
         <section className="col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-8 px-6 py-16 max-w-7xl mx-auto">
@@ -12,7 +13,7 @@ export default function Feature3() { return(
             <p className="font-body mb-6">
             Our dedicated team carefully plans every detail to create a seamless and stress-free experience. From the first consultation to the final cleanup, we handle it all—so you can simply enjoy the moment.
             What sets Cozy Social Club apart is our passion for crafting immersive gatherings that truly reflect your vision. With a deep love for hospitality, we curate unique, thoughtful experiences that leave a lasting impression on your guests.            </p>
-            <button className="btn btn-secondary-outline">Book</button>
+            <Button variant="outlineSecondary" >Celebrate</Button>
           </div>
           <div className="lg:col-span-6">
             <Image
