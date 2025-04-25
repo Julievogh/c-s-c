@@ -1,9 +1,9 @@
 import "./globals.css";
-import { Lora, Karla } from 'next/font/google'
+import { Lora, Karla } from "next/font/google";
+import Header from "@/components/Header";
 
-const lora = Lora({ subsets: ['latin'], variable: '--font-subtitle' })
-const karla = Karla({ subsets: ['latin'], variable: '--font-body' })
-
+const lora = Lora({ subsets: ["latin"], variable: "--font-subtitle" });
+const karla = Karla({ subsets: ["latin"], variable: "--font-body" });
 
 export const metadata = {
   title: "Create Next App",
@@ -13,7 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${lora.variable} ${karla.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
-  )
+  );
 }
