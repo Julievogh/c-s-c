@@ -1,51 +1,56 @@
 // components/MobileMenu.jsx
 "use client";
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function MobileMenu({ isOpen, onClose }) {
   return (
     <div
-      className={`fixed inset-0 bg-black/50 z-40 transform ${
-        isOpen ? 'translate-y-0' : '-translate-y-full'
-      } transition-transform duration-300`}
-      onClick={onClose}
+      className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ${
+        isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+      }`}
     >
-      <div
-        className="bg-[var(--color-soft-beige)] w-full p-6 space-y-4 relative"
-        onClick={e => e.stopPropagation()}
-      >
-        <CloseButton onClick={onClose} />
-
-        <nav className="flex flex-col space-y-4 text-center">
-          <Link href="#popup" className="uppercase" onClick={onClose}>
-            Pop-up Experience
-          </Link>
-          <Link href="#fine-dining" className="uppercase" onClick={onClose}>
-            Fine-Dining
-          </Link>
-          <Link href="#your-event" className="uppercase" onClick={onClose}>
-            Your Event
-          </Link>
-          <Link href="#story" className="uppercase" onClick={onClose}>
-            The Story
-          </Link>
-          <Link href="/webshop" className="btn btn-primary uppercase block mt-4" onClick={onClose}>
+      <div className="bg-[var(--color-warm-white)] px-6 pt-4 pb-6 space-y-4">
+        <Link
+          href="#popup"
+          onClick={onClose}
+          className="block text-xl uppercase font-karla"
+        >
+          Pop-up Experience
+        </Link>
+        <Link
+          href="#fine-dining"
+          onClick={onClose}
+          className="block text-xl uppercase font-karla"
+        >
+          Fine-Dining
+        </Link>
+        <Link
+          href="/blog"
+          onClick={onClose}
+          className="block text-xl uppercase font-karla"
+        >
+          Blog
+        </Link>
+        <Link
+          href="#your-event"
+          onClick={onClose}
+          className="block text-xl uppercase font-karla"
+        >
+          Your Event
+        </Link>
+        <Link
+          href="#story"
+          onClick={onClose}
+          className="block text-xl uppercase font-karla"
+        >
+          The Story
+        </Link>
+        <Link href="/webshop" onClick={onClose} className="block mt-4">
+          <span className="btn btn-primary uppercase w-full text-center">
             Webshop
-          </Link>
-        </nav>
+          </span>
+        </Link>
       </div>
     </div>
-  );
-}
-
-function CloseButton({ onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      className="absolute top-4 right-4 p-2 text-gray-700"
-      aria-label="Close menu"
-    >
-      ✕
-    </button>
   );
 }

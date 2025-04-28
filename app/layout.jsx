@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${lora.variable} ${karla.variable}`}>
       <body>
         <Header />
-        {children}
+        <div className="">{children}</div>
       </body>
     </html>
   );

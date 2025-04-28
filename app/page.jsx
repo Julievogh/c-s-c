@@ -20,7 +20,6 @@ export default function Home() {
     <div className="grid-mobile grid-desktop">
       <main className="row-start-2">
         {/* HEADER */}
-        <Header />
 
         {/* HERO */}
         <Hero />

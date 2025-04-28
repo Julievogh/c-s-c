@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap");
+
 /* Fonts */
 @font-face {
   font-family: "Recoleta";
@@ -34,7 +36,7 @@
 
 /* Theme Variables */
 :root {
-  --background: var(--color-soft-beige);
+  --background: var(--color-warm-white);
   --foreground: var(--color-dark-espresso);
 
   /* 🎨 Colors */
@@ -61,13 +63,17 @@
   --font-accent-family: "Dawning of a New Day", cursive;
 
   /* 📏 Font Sizes */
-  --font-h1: 128px;
+  --font-h1: 68px;
   --font-h2: 48px;
   --font-h3: 32px;
   --font-h4: 24px;
   --font-body-size: 18px;
   --font-accent-size: 54px;
   --font-button-size: 16px;
+}
+
+html {
+  scroll-padding-top: 5rem; /* Adjust based on header height */
 }
 
 /* Base Styles */
@@ -106,10 +112,14 @@
   }
 
   a {
-    font-family: var(--font-display-family);
+    font-family: var(--font-body-family);
     font-size: var(--font-body-size);
     color: var(--color-dark-green);
     text-decoration: none;
+  }
+
+  .font-karla {
+    font-family: var(--font-body-family);
   }
 
   .font-accent {
