@@ -47,9 +47,9 @@ export default async function BlogPage() {
                     className="w-full h-[400px] object-cover rounded-lg mb-6"
                   />
                 )}
-                <div className="prose max-w-prose mx-auto mb-6">
+                {/*  <div className="prose max-w-prose mx-auto mb-6">
                   <p>{articles[0].description}</p>
-                </div>
+                </div>*/}
                 <div className="text-center">
                   <span className="btn-outline btn px-8 py-2">Read More</span>
                 </div>

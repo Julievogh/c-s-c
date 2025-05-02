@@ -1,5 +1,3 @@
-// app/blog/[slug]/page.jsx
-
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,6 +13,7 @@ export default async function ArticlePage({ params }) {
     `http://localhost:1337/api/articles?filters[slug][$eq]=${params.slug}&populate=cover`,
     { cache: "no-store" }
   );
+
   if (!res.ok) return notFound();
   const { data } = await res.json();
   if (!data.length) return notFound();
@@ -24,11 +23,9 @@ export default async function ArticlePage({ params }) {
 
   return (
     <main className="bg-[color:var(--color-warm-white)]">
-      {/* 12-column grid with side margin */}
       <div className="grid grid-cols-12 px-4 lg:px-0">
-        {/* Wrapper: 12 cols small, 10 cols from column 2 on lg */}
         <div className="col-span-12 lg:col-span-10 lg:col-start-2 py-12">
-          {/* Back button */}
+          {/* Back to blog */}
           <Link href="/blog" className="inline-block mb-8">
             <span className="btn-outline btn px-4 py-2">← Back to Blog</span>
           </Link>
@@ -56,55 +53,27 @@ export default async function ArticlePage({ params }) {
             </div>
           )}
 
-          {/* Content */}
-          <div className="prose max-w-prose mx-auto mb-16">
-            <p>{description}</p>
-          </div>
+          {/* Short description */}
+          {description && (
+            <div className="prose max-w-prose mx-auto mb-16">
+              <p>{description}</p>
+            </div>
+          )}
 
-          {/* Render longtext */}
-          <div className="prose max-w-prose mx-auto mb-16">
-            {longtext.map((block, index) => {
-              switch (block.type) {
-                case "paragraph":
-                  return (
-                    <p key={index}>
-                      {block.children.map((child, idx) => child.text).join("")}
-                    </p>
-                  );
-                case "heading":
-                  return (
-                    <h2 key={index}>
-                      {block.children.map((child, idx) => child.text).join("")}
-                    </h2>
-                  );
-                case "list":
-                  return (
-                    <ul key={index}>
-                      {block.children.map((item, idx) => (
-                        <li key={idx}>
-                          {item.children.map((child, i) => child.text).join("")}
-                        </li>
-                      ))}
-                    </ul>
-                  );
-                // Add more block types as needed
-                default:
-                  return null;
-              }
-            })}
-          </div>
-
-          {/* Decorative divider */}
-          <div className="flex justify-center">
-            <svg
-              width="120"
-              height="24"
-              fill="none"
-              stroke="var(--color-deep-wine)"
-            >
-              <path d="M0,12 C30,0 90,24 120,12" strokeWidth="2" />
-            </svg>
-          </div>
+          {/* Longtext (rich content) */}
+          {Array.isArray(longtext) && longtext.length > 0 && (
+            <div className="prose max-w-prose mx-auto mb-16">
+              {longtext.map((item, index) => {
+                if (item.type === "paragraph") {
+                  return <p key={index}>{item.children?.[0]?.text || ""}</p>;
+                } else if (item.type === "heading") {
+                  return <h2 key={index}>{item.children?.[0]?.text || ""}</h2>;
+                }
+                // Add more types as needed (e.g. list, image)
+                return null;
+              })}
+            </div>
+          )}
         </div>
       </div>
     </main>

@@ -21,7 +21,8 @@
     "react-scroll-parallax": "^3.4.5",
     "react-wavify": "^1.11.1",
     "sanity": "^3.86.1",
-    "styled-components": "^6.1.17"
+    "styled-components": "^6.1.17",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,3 +1,4 @@
+// next.config.js
 const nextConfig = {
   images: {
     remotePatterns: [
