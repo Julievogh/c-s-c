@@ -75,7 +75,18 @@
 html {
   scroll-padding-top: 5rem; /* Adjust based on header height */
 }
-
+/* Scroll Snap */
+/*
+main {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+section {
+  scroll-snap-align: start;
+  height: 100vh;
+}
+*/
 /* Base Styles */
 @layer base {
   body {

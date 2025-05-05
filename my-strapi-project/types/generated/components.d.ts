@@ -1,5 +1,35 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface ProductColorChoose extends Struct.ComponentSchema {
+  collectionName: 'components_product_color_chooses';
+  info: {
+    displayName: 'ColorChoose';
+  };
+  attributes: {
+    hex: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+  };
+}
+
+export interface ProductColors extends Struct.ComponentSchema {
+  collectionName: 'components_product_colors';
+  info: {
+    displayName: 'colors';
+  };
+  attributes: {};
+}
+
+export interface ProductProductColor extends Struct.ComponentSchema {
+  collectionName: 'components_product_product_colors';
+  info: {
+    displayName: 'ProductColor';
+  };
+  attributes: {
+    hex: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+  };
+}
+
 export interface SharedMedia extends Struct.ComponentSchema {
   collectionName: 'components_shared_media';
   info: {
@@ -65,6 +95,9 @@ export interface SharedSlider extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'product.color-choose': ProductColorChoose;
+      'product.colors': ProductColors;
+      'product.product-color': ProductProductColor;
       'shared.media': SharedMedia;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;

@@ -25,7 +25,7 @@ export default async function ProductPage({ params }) {
   const { data } = await res.json();
   if (!data.length) return notFound();
   const prod = data[0];
-  const { Title, Description, Price, Image: imgObj } = prod;
+  const { Title, Description, Price, Image: imgObj, Colors } = prod;
 
   // Flatten description
   const description = Array.isArray(Description)
@@ -56,7 +56,6 @@ export default async function ProductPage({ params }) {
       };
     });
 
-  // Hand off everything to a client component
   return (
     <ProductDetail
       title={Title}
@@ -65,6 +64,8 @@ export default async function ProductPage({ params }) {
       imageUrl={mainImage}
       slug={slug}
       others={others}
+      colors={Colors} // Pass the colors as a prop to ProductDetail
+      note="Made to order. Limited edition drop—once it’s gone, it’s gone. Your order reserves your spot."
     />
   );
 }

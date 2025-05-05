@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_product_color_chooses",
+  "info": {
+    "displayName": "ColorChoose"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "hex": {
+      "type": "string"
+    }
+  }
+}

@@ -1,6 +1,6 @@
-import Image from "next/image";
+"use client";
 
-import Header from "@/components/Header";
+import { motion } from "framer-motion";
 import Hero from "@/components/Hero";
 import Intro from "@/components/Intro";
 import Feature1 from "@/components/features/Feature1";
@@ -11,52 +11,41 @@ import Events from "@/components/Events";
 import Founder from "@/components/Founder";
 import Story from "@/components/Story";
 import Socials from "@/components/Socials";
-import Button from "@/components/Button/page";
-
-import Footer from "@/components/Footer";
 
 export default function Home() {
+  // A simple “reveal” variant for all sections
+  const reveal = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <div className="grid-mobile grid-desktop">
       <main className="row-start-2">
-        {/* HEADER */}
-
-        {/* HERO */}
-        <Hero />
-
-        {/* INTRO */}
-        <Intro />
-
-        {/* FEATURE 1 */}
-
-        <Feature1 />
-
-        {/* FEATURE 2 */}
-
-        <Feature2 />
-
-        {/* FEATURE 3 */}
-
-        <Feature3 />
-
-        {/* TESTIMONIAL */}
-        <Testimonial />
-
-        {/* EVENTS */}
-        <Events />
-
-        {/* FOUNDER */}
-
-        <Founder />
-
-        {/* STORY */}
-        <Story />
-
-        {/* SOCIALS */}
-
-        <Socials />
-
-        <Footer />
+        {[
+          Hero,
+          Intro,
+          Feature1,
+          Feature2,
+          Feature3,
+          Testimonial,
+          Events,
+          Founder,
+          Story,
+          Socials,
+        ].map((Component, idx) => (
+          <motion.section
+            key={idx}
+            variants={reveal}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="w-full"
+          >
+            <Component />
+          </motion.section>
+        ))}
       </main>
     </div>
   );

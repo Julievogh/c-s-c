@@ -3,93 +3,146 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const thresholdEnter = 55;
+    const thresholdLeave = 45;
+    let ticking = false;
 
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (!scrolled && y > thresholdEnter) {
+          setScrolled(true);
+        } else if (scrolled && y < thresholdLeave) {
+          setScrolled(false);
+        }
+        ticking = false;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () =>
+      window.removeEventListener("scroll", onScroll, { passive: true });
+  }, [scrolled]);
+
+  // Ultra-compact header when scrolled: remove vertical padding for minimal height
   const headerClasses = [
-    "sticky top-0 w-full z-50 transition-all duration-300",
-    "bg-[var(--color-warm-white)] font-karla",
-    scrolled ? "py-2 shadow-md" : "py-6 shadow-lg",
+    "sticky top-0 w-full z-50 transition-all duration-300 backdrop-blur-sm",
+    "bg-[var(--color-warm-white)]/70 font-karla",
+    scrolled ? "py-0 shadow-md" : "py-4 shadow-lg",
   ].join(" ");
 
+  // Helper to check active link
+  const isActive = (href) => pathname === href;
+
   return (
-    <>
-      <header className={headerClasses}>
-        <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Desktop left links */}
-          <div className="hidden md:flex space-x-8">
-            <Link href="#popup" className="uppercase">
-              Pop-up Experience
+    <header className={headerClasses}>
+      <nav
+        className={
+          scrolled
+            ? "max-w-7xl mx-auto px-4 flex items-center justify-between"
+            : "max-w-7xl mx-auto px-6 flex items-center justify-between"
+        }
+      >
+        {/* Desktop left links */}
+        <div className="hidden md:flex space-x-8">
+          {[
+            { href: "#popup", label: "Pop-up Experience" },
+            { href: "#fine-dining", label: "Fine-Dining" },
+            { href: "/blog", label: "Blog" },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={`uppercase relative group ${isActive(href) ? "font-bold" : ""}`}
+            >
+              {label}
+              <span className="block absolute bottom-0 left-0 w-full h-0.5 bg-[var(--color-deep-wine)] scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
             </Link>
-            <Link href="#fine-dining" className="uppercase">
-              Fine-Dining
-            </Link>
-            <Link href="/blog" className="uppercase">
-              Blog
-            </Link>
-          </div>
+          ))}
+        </div>
 
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <Image
-              src="/imgs/logo.svg"
-              alt="Cozy Social Club"
-              width={scrolled ? 120 : 160}
-              height={scrolled ? 120 : 160}
-            />
-          </Link>
+        {/* Logo with smooth scaling and fade */}
+        <Link href="/" className="flex-shrink-0">
+          <Image
+            src="/imgs/logo.svg"
+            alt="Cozy Social Club"
+            width={160}
+            height={160}
+            className={`transition-transform transition-opacity duration-300 ${
+              scrolled ? "scale-75 opacity-80" : "scale-100 opacity-100"
+            }`}
+          />
+        </Link>
 
-          {/* Desktop right links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="#your-event" className="uppercase">
-              Your Event
+        {/* Desktop right links */}
+        <div className="hidden md:flex items-center space-x-8">
+          {[
+            { href: "#your-event", label: "Your Event" },
+            { href: "#story", label: "The Story" },
+          ].map(({ href, label }) => (
+            <Link key={href} href={href} className="uppercase relative group">
+              {label}
+              <span className="block absolute bottom-0 left-0 w-full h-0.5 bg-[var(--color-deep-wine)] scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
             </Link>
-            <Link href="#story" className="uppercase">
-              The Story
-            </Link>
-            <Link href="/webshop" className="btn btn-primary uppercase">
-              Webshop
-            </Link>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            className="md:hidden flex flex-col justify-center items-center w-8 h-8"
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+          ))}
+          <Link
+            href="/webshop"
+            className="btn btn-primary uppercase transition-transform hover:scale-105"
           >
-            <span
-              className={`block w-6 h-0.5 bg-gray-800 transition-transform duration-300 ${
-                menuOpen ? "rotate-45 translate-y-1" : ""
-              }`}
-            />
-            <span
-              className={`block w-6 h-0.5 bg-gray-800 my-1 transition-opacity duration-300 ${
-                menuOpen ? "opacity-0" : "opacity-100"
-              }`}
-            />
-            <span
-              className={`block w-6 h-0.5 bg-gray-800 transition-transform duration-300 ${
-                menuOpen ? "-rotate-45 -translate-y-1" : ""
-              }`}
-            />
-          </button>
-        </nav>
+            Webshop
+          </Link>
+        </div>
 
-        <div className="max-w-7xl mx-auto h-px bg-[var(--color-deep-wine)] mb-0 md:mb-4 -mt-2"></div>
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden flex flex-col justify-center items-center w-8 h-8"
+          onClick={() => setMenuOpen((o) => !o)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+        >
+          <span
+            className={`block w-6 h-0.5 bg-gray-800 transition-transform duration-300 ${
+              menuOpen ? "rotate-45 translate-y-1" : ""
+            }`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-gray-800 my-1 transition-opacity duration-300 ${
+              menuOpen ? "opacity-0" : "opacity-100"
+            }`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-gray-800 transition-transform duration-300 ${
+              menuOpen ? "-rotate-45 -translate-y-1" : ""
+            }`}
+          />
+        </button>
+      </nav>
 
-        {/* Fold-down menu panel */}
-        <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
-      </header>
-    </>
+      {/* Backdrop overlay for mobile menu */}
+      <div
+        className={`fixed inset-0 bg-black/50 transition-opacity ${
+          menuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMenuOpen(false)}
+      />
+
+      {/* Wine-colored separator below nav, slightly shifted 
+      <div className="max-w-7xl mx-auto h-px bg-[var(--color-deep-wine)] -mt-1" />
+*/}
+      {/* Mobile menu panel */}
+      <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+    </header>
   );
 }
