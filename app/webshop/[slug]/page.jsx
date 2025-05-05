@@ -5,12 +5,17 @@ import { notFound } from "next/navigation";
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 export async function generateStaticParams() {
-  const res = await fetch(`${API}/api/products?populate=*`, {
-    cache: "no-store",
-  });
-  if (!res.ok) return [];
-  const { data } = await res.json();
-  return data.map((item) => ({ slug: item.Slug }));
+  try {
+    const res = await fetch("http://localhost:1337/api/products");
+    const data = await res.json();
+
+    return data.data.map((item) => ({
+      slug: item.attributes.slug,
+    }));
+  } catch (error) {
+    console.error("Failed to fetch slugs:", error);
+    return [];
+  }
 }
 
 export default async function ProductPage({ params }) {
