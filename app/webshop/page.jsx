@@ -5,7 +5,7 @@ import Socials from "@/components/Socials";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 
-const API_URL = process.env.API_URL || "http://localhost:1337";
+const API_URL = process.env.API_URL || "https://strapi-csc.onrender.com";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
