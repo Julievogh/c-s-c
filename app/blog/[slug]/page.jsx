@@ -21,6 +21,8 @@ export default async function ArticlePage({ params }) {
   if (!data.length) return notFound();
 
   const { title, description, publishedAt, cover, longtext } = data[0];
+
+  // Fallback for billede
   const src = cover?.formats?.large?.url || cover?.url;
 
   return (
@@ -71,7 +73,6 @@ export default async function ArticlePage({ params }) {
                 } else if (item.type === "heading") {
                   return <h2 key={index}>{item.children?.[0]?.text || ""}</h2>;
                 }
-                // Add more types as needed (e.g. list, image)
                 return null;
               })}
             </div>

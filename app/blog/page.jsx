@@ -40,10 +40,7 @@ export default async function BlogPage() {
                 </p>
                 {articles[0].cover && (
                   <Image
-                    src={`${API_URL}${
-                      articles[0].cover.formats?.medium?.url ||
-                      articles[0].cover.url
-                    }`}
+                    src={`${API_URL}${articles[0].cover.formats?.medium?.url || articles[0].cover.url}`}
                     width={1200}
                     height={600}
                     alt={articles[0].title}
@@ -87,19 +84,17 @@ export default async function BlogPage() {
 
           {/* To indlæg side-om-side */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            {articles.slice(1, 3).map((article) => {
-              const { id, title, slug, cover, publishedAt } = article;
-              const imageUrl = cover?.formats?.medium?.url || cover?.url;
-
-              return (
+            {articles
+              .slice(1, 3)
+              .map(({ id, title, slug, cover, publishedAt }) => (
                 <Link
                   key={id}
                   href={`/blog/${slug}`}
                   className="block bg-[color:var(--color-soft-beige)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  {imageUrl && (
+                  {cover && (
                     <Image
-                      src={`${API_URL}${imageUrl}`}
+                      src={`${API_URL}${cover.formats?.medium?.url || cover.url}`}
                       width={600}
                       height={300}
                       alt={title}
@@ -121,11 +116,10 @@ export default async function BlogPage() {
                     </div>
                   </div>
                 </Link>
-              );
-            })}
+              ))}
           </section>
 
-          {/* Divider */}
+          {/* Endnu en divider */}
           <div className="flex justify-center mb-16">
             <svg
               width="100"
@@ -139,19 +133,17 @@ export default async function BlogPage() {
 
           {/* Tidligere indlæg */}
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
-            {articles.slice(3, 9).map((article) => {
-              const { id, title, slug, cover, publishedAt } = article;
-              const imageUrl = cover?.formats?.small?.url || cover?.url;
-
-              return (
+            {articles
+              .slice(3, 9)
+              .map(({ id, title, slug, cover, publishedAt }) => (
                 <Link
                   key={id}
                   href={`/blog/${slug}`}
                   className="block bg-[color:var(--color-soft-beige)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  {imageUrl && (
+                  {cover && (
                     <Image
-                      src={`${API_URL}${imageUrl}`}
+                      src={`${API_URL}${cover.formats?.small?.url || cover.url}`}
                       width={400}
                       height={200}
                       alt={title}
@@ -169,8 +161,7 @@ export default async function BlogPage() {
                     <span className="btn-outline btn px-5 py-1">Read More</span>
                   </div>
                 </Link>
-              );
-            })}
+              ))}
           </section>
         </div>
       </div>
