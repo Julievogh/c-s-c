@@ -1,18 +1,18 @@
-// app/blog/page.jsx
 import Image from "next/image";
 import Link from "next/link";
 
 export const revalidate = 0;
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+
 export default async function BlogPage() {
   const res = await fetch(
-    "http://localhost:1337/api/articles?populate=cover&sort=publishedAt:desc",
-    {
-      cache: "no-store",
-    }
+    `${API_URL}/api/articles?populate=cover&sort=publishedAt:desc`,
+    { cache: "no-store" }
   );
   if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
   const { data: articles } = await res.json();
+
   return (
     <main className="bg-[color:var(--color-warm-white)]">
       <div className="grid grid-cols-12 px-4 lg:px-0">
@@ -25,7 +25,7 @@ export default async function BlogPage() {
             You have been cordially invited
           </p>
 
-          {/* Hero-post: hele sektionen er klikbar */}
+          {/* Hero-post */}
           {articles[0] && (
             <Link href={`/blog/${articles[0].slug}`} className="block">
               <section className="bg-[color:var(--color-pantone-2024)] p-6 rounded-lg mb-16 hover:shadow-lg transition-shadow">
@@ -40,16 +40,13 @@ export default async function BlogPage() {
                 </p>
                 {articles[0].cover?.formats?.medium?.url && (
                   <Image
-                    src={`http://localhost:1337${articles[0].cover.formats.medium.url}`}
+                    src={`${API_URL}${articles[0].cover.formats.medium.url}`}
                     width={1200}
                     height={600}
                     alt={articles[0].title}
                     className="w-full h-[400px] object-cover rounded-lg mb-6"
                   />
                 )}
-                {/*  <div className="prose max-w-prose mx-auto mb-6">
-                  <p>{articles[0].description}</p>
-                </div>*/}
                 <div className="text-center">
                   <span className="btn-outline btn px-8 py-2">Read More</span>
                 </div>
@@ -87,9 +84,9 @@ export default async function BlogPage() {
 
           {/* To indlæg side-om-side */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            {articles
-              .slice(1, 3)
-              .map(({ id, title, slug, cover, publishedAt }) => (
+            {articles.slice(1, 3).map((article) => {
+              const { id, title, slug, cover, publishedAt } = article;
+              return (
                 <Link
                   key={id}
                   href={`/blog/${slug}`}
@@ -97,7 +94,7 @@ export default async function BlogPage() {
                 >
                   {cover?.formats?.medium?.url && (
                     <Image
-                      src={`http://localhost:1337${cover.formats.medium.url}`}
+                      src={`${API_URL}${cover.formats.medium.url}`}
                       width={600}
                       height={300}
                       alt={title}
@@ -119,10 +116,11 @@ export default async function BlogPage() {
                     </div>
                   </div>
                 </Link>
-              ))}
+              );
+            })}
           </section>
 
-          {/* Endnu en dekorativ divider */}
+          {/* Divider */}
           <div className="flex justify-center mb-16">
             <svg
               width="100"
@@ -134,11 +132,11 @@ export default async function BlogPage() {
             </svg>
           </div>
 
-          {/* Seks “tidligere” indlæg i grid */}
+          {/* Seks tidligere indlæg */}
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
-            {articles
-              .slice(3, 9)
-              .map(({ id, title, slug, cover, publishedAt }) => (
+            {articles.slice(3, 9).map((article) => {
+              const { id, title, slug, cover, publishedAt } = article;
+              return (
                 <Link
                   key={id}
                   href={`/blog/${slug}`}
@@ -146,7 +144,7 @@ export default async function BlogPage() {
                 >
                   {cover?.formats?.small?.url && (
                     <Image
-                      src={`http://localhost:1337${cover.formats.small.url}`}
+                      src={`${API_URL}${cover.formats.small.url}`}
                       width={400}
                       height={200}
                       alt={title}
@@ -164,7 +162,8 @@ export default async function BlogPage() {
                     <span className="btn-outline btn px-5 py-1">Read More</span>
                   </div>
                 </Link>
-              ))}
+              );
+            })}
           </section>
         </div>
       </div>

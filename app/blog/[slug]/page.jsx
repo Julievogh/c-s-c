@@ -2,15 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+
 export async function generateStaticParams() {
-  const res = await fetch("http://localhost:1337/api/articles");
+  const res = await fetch(`${API_URL}/api/articles`);
   const { data } = await res.json();
   return data.map(({ slug }) => ({ slug }));
 }
 
 export default async function ArticlePage({ params }) {
   const res = await fetch(
-    `http://localhost:1337/api/articles?filters[slug][$eq]=${params.slug}&populate=cover`,
+    `${API_URL}/api/articles?filters[slug][$eq]=${params.slug}&populate=cover`,
     { cache: "no-store" }
   );
 
@@ -44,7 +46,7 @@ export default async function ArticlePage({ params }) {
           {src && (
             <div className="flex justify-center mb-12">
               <Image
-                src={`http://localhost:1337${src}`}
+                src={`${API_URL}${src}`}
                 width={1000}
                 height={600}
                 alt={title}
