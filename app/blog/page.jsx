@@ -38,9 +38,12 @@ export default async function BlogPage() {
                 <p className="text-center text-sm text-gray-500 mb-4">
                   {new Date(articles[0].publishedAt).toLocaleDateString()}
                 </p>
-                {articles[0].cover?.formats?.medium?.url && (
+                {articles[0].cover && (
                   <Image
-                    src={`${API_URL}${articles[0].cover.formats.medium.url}`}
+                    src={`${API_URL}${
+                      articles[0].cover.formats?.medium?.url ||
+                      articles[0].cover.url
+                    }`}
                     width={1200}
                     height={600}
                     alt={articles[0].title}
@@ -54,7 +57,7 @@ export default async function BlogPage() {
             </Link>
           )}
 
-          {/* Dekorativ divider */}
+          {/* Divider */}
           <div className="flex justify-center mb-16">
             <svg
               width="100"
@@ -86,15 +89,17 @@ export default async function BlogPage() {
           <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             {articles.slice(1, 3).map((article) => {
               const { id, title, slug, cover, publishedAt } = article;
+              const imageUrl = cover?.formats?.medium?.url || cover?.url;
+
               return (
                 <Link
                   key={id}
                   href={`/blog/${slug}`}
                   className="block bg-[color:var(--color-soft-beige)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  {cover?.formats?.medium?.url && (
+                  {imageUrl && (
                     <Image
-                      src={`${API_URL}${cover.formats.medium.url}`}
+                      src={`${API_URL}${imageUrl}`}
                       width={600}
                       height={300}
                       alt={title}
@@ -132,19 +137,21 @@ export default async function BlogPage() {
             </svg>
           </div>
 
-          {/* Seks tidligere indlæg */}
+          {/* Tidligere indlæg */}
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
             {articles.slice(3, 9).map((article) => {
               const { id, title, slug, cover, publishedAt } = article;
+              const imageUrl = cover?.formats?.small?.url || cover?.url;
+
               return (
                 <Link
                   key={id}
                   href={`/blog/${slug}`}
                   className="block bg-[color:var(--color-soft-beige)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  {cover?.formats?.small?.url && (
+                  {imageUrl && (
                     <Image
-                      src={`${API_URL}${cover.formats.small.url}`}
+                      src={`${API_URL}${imageUrl}`}
                       width={400}
                       height={200}
                       alt={title}
