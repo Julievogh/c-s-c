@@ -41,8 +41,9 @@ export default function CalendarPage() {
               onChange={(e) => setMonth(+e.target.value)}
               className="border p-2 rounded"
             >
+              <option value={0}>All months</option>
               {Array.from({ length: 12 }, (_, i) => (
-                <option key={i} value={i + 1}>
+                <option key={i + 1} value={i + 1}>
                   {new Date(0, i).toLocaleString("default", { month: "long" })}
                 </option>
               ))}
