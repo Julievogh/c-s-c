@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const revalidate = 0;
 
-const API_URL = process.env.API_URL || "https://strapi-csc.onrender.com";
+const API_URL = process.env.API_URL ?? "https://strapi-csc.onrender.com";
 
 export default async function BlogPage() {
   const res = await fetch(
