@@ -5,92 +5,98 @@ import { notFound } from "next/navigation";
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 
 export async function generateStaticParams() {
-  const res = await fetch(`${API_URL}/api/articles`);
-  if (!res.ok) {
-    console.error("Fejl ved hentning af artikler:", res.statusText);
+  try {
+    const res = await fetch(`${API_URL}/api/articles`);
+    if (!res.ok) {
+      console.error("Fejl ved hentning af artikler:", res.statusText);
+      return [];
+    }
+
+    const json = await res.json();
+    return json.data.map((item) => ({
+      slug: item.attributes.slug, // OBS! lowercase og inde i attributes
+    }));
+  } catch (error) {
+    console.error("Fejl i generateStaticParams:", error);
     return [];
   }
-
-  const json = await res.json();
-  const data = json?.data;
-
-  if (!Array.isArray(data)) {
-    console.error("Ugyldigt dataformat:", data);
-    return [];
-  }
-
-  return data.map(({ slug }) => ({ slug }));
 }
 
 export default async function ArticlePage({ params }) {
-  const res = await fetch(
-    `${API_URL}/api/articles?filters[slug][$eq]=${params.slug}&populate=cover`,
-    { cache: "no-store" }
-  );
+  try {
+    const res = await fetch(
+      `${API_URL}/api/articles?filters[slug][$eq]=${params.slug}&populate=cover`,
+      { cache: "no-store" }
+    );
+    if (!res.ok) return notFound();
 
-  if (!res.ok) return notFound();
-  const { data } = await res.json();
-  if (!data.length) return notFound();
+    const { data } = await res.json();
+    if (!data.length) return notFound();
 
-  const { title, description, publishedAt, cover, longtext } = data[0];
+    const article = data[0].attributes;
+    const { title, description, publishedAt, cover, longtext } = article;
+    const src = cover?.formats?.large?.url || cover?.url;
 
-  // Fallback for billede
-  const src = cover?.formats?.large?.url || cover?.url;
+    return (
+      <main className="bg-[color:var(--color-warm-white)]">
+        <div className="grid grid-cols-12 px-4 lg:px-0">
+          <div className="col-span-12 lg:col-span-10 lg:col-start-2 py-12">
+            {/* Tilbage til blog */}
+            <Link href="/blog" className="inline-block mb-8">
+              <span className="btn-outline btn px-4 py-2">← Back to Blog</span>
+            </Link>
 
-  return (
-    <main className="bg-[color:var(--color-warm-white)]">
-      <div className="grid grid-cols-12 px-4 lg:px-0">
-        <div className="col-span-12 lg:col-span-10 lg:col-start-2 py-12">
-          {/* Back to blog */}
-          <Link href="/blog" className="inline-block mb-8">
-            <span className="btn-outline btn px-4 py-2">← Back to Blog</span>
-          </Link>
+            {/* Titel */}
+            <h1 className="font-accent text-[var(--font-accent-size)] text-center mb-4">
+              {title}
+            </h1>
 
-          {/* Title */}
-          <h1 className="font-accent text-[var(--font-accent-size)] text-center mb-4">
-            {title}
-          </h1>
+            {/* Dato */}
+            <p className="text-center text-sm text-gray-500 mb-8">
+              Published on {new Date(publishedAt).toLocaleDateString()}
+            </p>
 
-          {/* Date */}
-          <p className="text-center text-sm text-gray-500 mb-8">
-            Published on {new Date(publishedAt).toLocaleDateString()}
-          </p>
+            {/* Cover billede */}
+            {src && (
+              <div className="flex justify-center mb-12">
+                <Image
+                  src={`${API_URL}${src}`}
+                  width={1000}
+                  height={600}
+                  alt={title}
+                  className="w-full max-w-[800px] h-auto object-cover rounded-lg"
+                />
+              </div>
+            )}
 
-          {/* Cover image */}
-          {src && (
-            <div className="flex justify-center mb-12">
-              <Image
-                src={`${API_URL}${src}`}
-                width={1000}
-                height={600}
-                alt={title}
-                className="w-full max-w-[800px] h-auto object-cover rounded-lg"
-              />
-            </div>
-          )}
+            {/* Beskrivelse */}
+            {description && (
+              <div className="prose max-w-prose mx-auto mb-16">
+                <p>{description}</p>
+              </div>
+            )}
 
-          {/* Short description */}
-          {description && (
-            <div className="prose max-w-prose mx-auto mb-16">
-              <p>{description}</p>
-            </div>
-          )}
-
-          {/* Longtext (rich content) */}
-          {Array.isArray(longtext) && longtext.length > 0 && (
-            <div className="prose max-w-prose mx-auto mb-16">
-              {longtext.map((item, index) => {
-                if (item.type === "paragraph") {
-                  return <p key={index}>{item.children?.[0]?.text || ""}</p>;
-                } else if (item.type === "heading") {
-                  return <h2 key={index}>{item.children?.[0]?.text || ""}</h2>;
-                }
-                return null;
-              })}
-            </div>
-          )}
+            {/* Lang tekst */}
+            {Array.isArray(longtext) && longtext.length > 0 && (
+              <div className="prose max-w-prose mx-auto mb-16">
+                {longtext.map((item, index) => {
+                  if (item.type === "paragraph") {
+                    return <p key={index}>{item.children?.[0]?.text || ""}</p>;
+                  } else if (item.type === "heading") {
+                    return (
+                      <h2 key={index}>{item.children?.[0]?.text || ""}</h2>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
-  );
+      </main>
+    );
+  } catch (err) {
+    console.error("Fejl i ArticlePage:", err);
+    return notFound();
+  }
 }
