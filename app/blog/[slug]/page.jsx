@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic"; // Vigtigt for Vercel
 
 export async function generateStaticParams() {
   try {
@@ -13,11 +13,8 @@ export async function generateStaticParams() {
       console.error("Fejl ved hentning af artikler:", res.statusText);
       return [];
     }
-
-    const json = await res.json();
-    return json.data.map((item) => ({
-      slug: item.attributes.slug, // OBS! lowercase og inde i attributes
-    }));
+    const { data } = await res.json();
+    return data.map(({ slug }) => ({ slug }));
   } catch (error) {
     console.error("Fejl i generateStaticParams:", error);
     return [];
@@ -35,30 +32,25 @@ export default async function ArticlePage({ params }) {
     const { data } = await res.json();
     if (!data.length) return notFound();
 
-    const article = data[0].attributes;
-    const { title, description, publishedAt, cover, longtext } = article;
+    const { title, description, publishedAt, cover, longtext } = data[0];
     const src = cover?.formats?.large?.url || cover?.url;
 
     return (
       <main className="bg-[color:var(--color-warm-white)]">
         <div className="grid grid-cols-12 px-4 lg:px-0">
           <div className="col-span-12 lg:col-span-10 lg:col-start-2 py-12">
-            {/* Tilbage til blog */}
             <Link href="/blog" className="inline-block mb-8">
               <span className="btn-outline btn px-4 py-2">← Back to Blog</span>
             </Link>
 
-            {/* Titel */}
             <h1 className="font-accent text-[var(--font-accent-size)] text-center mb-4">
               {title}
             </h1>
 
-            {/* Dato */}
             <p className="text-center text-sm text-gray-500 mb-8">
               Published on {new Date(publishedAt).toLocaleDateString()}
             </p>
 
-            {/* Cover billede */}
             {src && (
               <div className="flex justify-center mb-12">
                 <Image
@@ -71,14 +63,12 @@ export default async function ArticlePage({ params }) {
               </div>
             )}
 
-            {/* Beskrivelse */}
             {description && (
               <div className="prose max-w-prose mx-auto mb-16">
                 <p>{description}</p>
               </div>
             )}
 
-            {/* Lang tekst */}
             {Array.isArray(longtext) && longtext.length > 0 && (
               <div className="prose max-w-prose mx-auto mb-16">
                 {longtext.map((item, index) => {

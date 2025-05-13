@@ -5,15 +5,19 @@ import Socials from "@/components/Socials";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
+// Fallback til localhost hvis miljøvariabel mangler
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products?populate=*`)
-      .then((res) => res.json())
+    fetch(`${API}/api/products?populate=*`)
+      .then((res) => {
+        if (!res.ok) throw new Error("API-fejl: " + res.status);
+        return res.json();
+      })
       .then((data) => {
         const formatted = data.data.map((item) => {
           const description = Array.isArray(item.Description)
@@ -24,9 +28,7 @@ export default function ProductsPage() {
 
           const img = item.Image;
           const path = img?.formats?.small?.url ?? img?.url;
-          const imageUrl = path
-            ? `${process.env.NEXT_PUBLIC_API_URL}${path}`
-            : "/imgs/placeholder.png";
+          const imageUrl = path ? `${API}${path}` : "/imgs/placeholder.png";
 
           return {
             id: item.id,
@@ -39,7 +41,9 @@ export default function ProductsPage() {
         });
         setProducts(formatted);
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error("Fejl i fetch:", err);
+      })
       .finally(() => setLoading(false));
   }, []);
 
