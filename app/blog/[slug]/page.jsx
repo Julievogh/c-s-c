@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   try {
     const res = await fetch(`${API_URL}/api/articles`);
