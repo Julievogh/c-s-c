@@ -1,8 +1,10 @@
 @import "tailwindcss";
-
 @import url("https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap");
 
-/* Fonts */
+/* ----------------------------- */
+/*        Font Imports          */
+/* ----------------------------- */
+
 @font-face {
   font-family: "Recoleta";
   src: url("/fonts/Recoleta-Regular.ttf") format("truetype");
@@ -15,7 +17,7 @@
   font-family: "Recoleta Alt";
   src: url("/fonts/RecoletaAlt-Regular.ttf") format("truetype");
   font-weight: 600;
-  font-style: bold;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -34,7 +36,10 @@
   font-style: normal;
 }
 
-/* Theme Variables */
+/* ----------------------------- */
+/*        CSS Variables         */
+/* ----------------------------- */
+
 :root {
   --background: var(--color-warm-white);
   --foreground: var(--color-dark-espresso);
@@ -73,21 +78,13 @@
 }
 
 html {
-  scroll-padding-top: 5rem; /* Adjust based on header height */
+  scroll-padding-top: 5rem;
 }
-/* Scroll Snap */
-/*
-main {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
-}
-section {
-  scroll-snap-align: start;
-  height: 100vh;
-}
-*/
-/* Base Styles */
+
+/* ----------------------------- */
+/*         Base Styles          */
+/* ----------------------------- */
+
 @layer base {
   body {
     font-family: var(--font-body-family);
@@ -98,7 +95,25 @@ section {
 
   h1 {
     font-family: var(--font-hero-family);
-    font-size: var(--font-h1);
+    font-size: 40px;
+  }
+
+  @media (min-width: 640px) {
+    h1 {
+      font-size: 48px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 60px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    h1 {
+      font-size: var(--font-h1);
+    }
   }
 
   h2 {
@@ -112,14 +127,13 @@ section {
     font-size: var(--font-h3);
   }
 
-  h4 {
-    font-family: var(--font-display-family); /* Added missing font family */
-    font-size: var(--font-h4);
-  }
-
+  h4,
   h5 {
     font-family: var(--font-display-family);
-    font-size: var(--font-h5);
+  }
+
+  h4 {
+    font-size: var(--font-h4);
   }
 
   a {
@@ -135,8 +149,20 @@ section {
 
   .font-accent {
     font-family: var(--font-accent-family);
-    font-size: var(--font-accent-size);
+    font-size: 24px;
     color: var(--color-dark-green);
+  }
+
+  @media (min-width: 640px) {
+    .font-accent {
+      font-size: 32px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .font-accent {
+      font-size: var(--font-accent-size);
+    }
   }
 
   .button {
@@ -146,14 +172,17 @@ section {
 
   .ig-handle {
     font-family: var(--font-hero-family);
-    font-size: 2rem; /* 32px default, override if needed */
+    font-size: 2rem;
     color: var(--color-dark-green);
     font-weight: 800;
     margin-bottom: 3rem;
   }
 }
 
-/* Utilities */
+/* ----------------------------- */
+/*        Custom Utilities      */
+/* ----------------------------- */
+
 @layer utilities {
   .btn {
     @apply inline-block px-6 py-2 rounded-full font-medium transition-all;
@@ -174,22 +203,22 @@ section {
   .btn-secondary-outline {
     @apply border bg-[color:var(--color-golden)] text-[color:var(--color-golden)] bg-transparent hover:border-[color:var(--color-terracotta)] hover:text-[color:var(--color-terracotta)];
   }
-}
 
-@layer utilities {
   .responsive-grid {
-    @apply grid gap-5 px-10; /* Default mobile */
+    @apply grid gap-5 px-10;
   }
 
-  /* For desktop (lg and up) */
   @media (min-width: 1024px) {
     .responsive-grid {
-      @apply grid-cols-12 gap-10 px-0; /* More columns and increased gap */
+      @apply grid-cols-12 gap-10 px-0;
     }
   }
 }
 
-/* Dark Mode */
+/* ----------------------------- */
+/*         Dark Mode            */
+/* ----------------------------- */
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground: var(--color-soft-beige);
