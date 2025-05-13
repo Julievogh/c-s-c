@@ -562,7 +562,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     Price: Schema.Attribute.Decimal;
     publishedAt: Schema.Attribute.DateTime;
-    Slug: Schema.Attribute.String;
+    slug: Schema.Attribute.String;
     Title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

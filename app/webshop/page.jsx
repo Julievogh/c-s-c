@@ -38,7 +38,7 @@ export default function ProductsPage() {
             description,
             price: item.Price,
             image: imageUrl,
-            slug: item.Slug,
+            slug: item.slug,
           };
         });
         setProducts(formatted);

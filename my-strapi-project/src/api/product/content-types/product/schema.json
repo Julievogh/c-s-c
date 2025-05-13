@@ -31,7 +31,7 @@
         "audios"
       ]
     },
-    "Slug": {
+    "slug": {
       "type": "string"
     },
     "Colors": {

@@ -14,7 +14,9 @@ export async function generateStaticParams() {
       return [];
     }
     const { data } = await res.json();
-    return data.map(({ slug }) => ({ slug }));
+    return data.map((item) => ({
+      slug: item.attributes.slug,
+    }));
   } catch (error) {
     console.error("Fejl i generateStaticParams:", error);
     return [];
