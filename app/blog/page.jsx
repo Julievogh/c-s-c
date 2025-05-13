@@ -5,6 +5,8 @@ export const revalidate = 0;
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogPage() {
   let articles = [];
 

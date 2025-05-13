@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 // Fallback til localhost hvis miljøvariabel mangler
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 
+export const dynamic = "force-dynamic";
+
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
