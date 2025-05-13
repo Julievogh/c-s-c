@@ -6,7 +6,19 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 
 export async function generateStaticParams() {
   const res = await fetch(`${API_URL}/api/articles`);
-  const { data } = await res.json();
+  if (!res.ok) {
+    console.error("Fejl ved hentning af artikler:", res.statusText);
+    return [];
+  }
+
+  const json = await res.json();
+  const data = json?.data;
+
+  if (!Array.isArray(data)) {
+    console.error("Ugyldigt dataformat:", data);
+    return [];
+  }
+
   return data.map(({ slug }) => ({ slug }));
 }
 
