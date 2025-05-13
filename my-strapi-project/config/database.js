@@ -7,6 +7,5 @@ module.exports = ({ env }) => ({
         rejectUnauthorized: false,
       },
     },
-    useNullAsDefault: true,
   },
 });
