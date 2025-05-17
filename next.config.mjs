@@ -13,6 +13,11 @@ const nextConfig = {
         hostname: "strapi-csc.onrender.com",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
     ],
   },
 };
