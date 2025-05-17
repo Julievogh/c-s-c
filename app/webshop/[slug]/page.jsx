@@ -33,7 +33,13 @@ export default async function ProductPage({ params }) {
   if (!data.length) return notFound();
 
   const prod = data[0];
-  const { Title, Description, Price, Image: imgObj, ColorChoose } = prod;
+  const {
+    Title,
+    Description,
+    Price,
+    Image: imgObj,
+    ColorChoose = [], // 👈 fallback til tomt array
+  } = prod;
 
   const description = Array.isArray(Description)
     ? Description.map((blk) =>
