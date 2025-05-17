@@ -7,6 +7,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 
 export const dynamic = "force-dynamic";
 
+// ✅ Helper der sikrer vi ikke prepender Cloudinary-URL'er med localhost
+function getImageUrl(path) {
+  if (!path) return "/imgs/placeholder.png";
+  return path.startsWith("http") ? path : `${API_URL}${path}`;
+}
+
 export default async function BlogPage() {
   let articles = [];
 
@@ -30,7 +36,6 @@ export default async function BlogPage() {
     <main className="bg-[color:var(--color-warm-white)]">
       <div className="grid grid-cols-12 px-4 lg:px-0">
         <div className="col-span-12 lg:col-span-10 lg:col-start-2">
-          {/* Titel & undertekst */}
           <h1 className="font-accent text-[var(--font-accent-size)] text-center mt-16">
             Blog
           </h1>
@@ -56,7 +61,7 @@ export default async function BlogPage() {
                   const imgPath = cover?.formats?.medium?.url || cover?.url;
                   return imgPath ? (
                     <Image
-                      src={`${API_URL}${imgPath}`}
+                      src={getImageUrl(imgPath)}
                       width={1200}
                       height={600}
                       alt={articles[0].title}
@@ -71,7 +76,6 @@ export default async function BlogPage() {
             </Link>
           )}
 
-          {/* Divider */}
           <div className="flex justify-center mb-16">
             <svg
               width="100"
@@ -113,7 +117,7 @@ export default async function BlogPage() {
                   >
                     {imgPath && (
                       <Image
-                        src={`${API_URL}${imgPath}`}
+                        src={getImageUrl(imgPath)}
                         width={600}
                         height={300}
                         alt={title}
@@ -141,7 +145,6 @@ export default async function BlogPage() {
               })}
           </section>
 
-          {/* Divider */}
           <div className="flex justify-center mb-16">
             <svg
               width="100"
@@ -167,7 +170,7 @@ export default async function BlogPage() {
                   >
                     {imgPath && (
                       <Image
-                        src={`${API_URL}${imgPath}`}
+                        src={getImageUrl(imgPath)}
                         width={400}
                         height={200}
                         alt={title}

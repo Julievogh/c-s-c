@@ -3,8 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
-
 export const dynamic = "force-dynamic"; // Vigtigt for Vercel
+
+// ✅ Helper som tjekker om billedets URL allerede er absolut
+function getImageUrl(path) {
+  if (!path) return "/imgs/placeholder.png";
+  return path.startsWith("http") ? path : `${API_URL}${path}`;
+}
 
 export async function generateStaticParams() {
   try {
@@ -56,7 +61,7 @@ export default async function ArticlePage({ params }) {
             {src && (
               <div className="flex justify-center mb-12">
                 <Image
-                  src={`${API_URL}${src}`}
+                  src={getImageUrl(src)}
                   width={1000}
                   height={600}
                   alt={title}

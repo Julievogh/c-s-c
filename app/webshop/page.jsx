@@ -7,8 +7,13 @@ import { useEffect, useState } from "react";
 
 // Fallback til localhost hvis miljøvariabel mangler
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
-
 export const dynamic = "force-dynamic";
+
+// ✅ Helper til billede-URL
+function getImageUrl(url) {
+  if (!url) return "/imgs/placeholder.png";
+  return url.startsWith("http") ? url : `${API}${url}`;
+}
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -29,9 +34,7 @@ export default function ProductsPage() {
             : "No description";
 
           const img = item.Image;
-          const imageUrl = img?.url?.startsWith("http")
-            ? img.url
-            : `${API}${img?.url ?? ""}`;
+          const imageUrl = getImageUrl(img?.formats?.small?.url || img?.url);
 
           return {
             id: item.id,
@@ -97,7 +100,7 @@ export default function ProductsPage() {
               <p className="text-sm text-[var(--color-deep-wine)] mt-2">
                 Limited · Made to Order
               </p>
-              <p className="text-xl font-bold mt-auto">{p.price} DKK</p>
+              <p className="text-xl font-bold mt-auto">{p.price} DKK</p>
             </div>
           </Link>
         ))}
