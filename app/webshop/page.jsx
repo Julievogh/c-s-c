@@ -5,11 +5,9 @@ import Socials from "@/components/Socials";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 
-// Fallback til localhost hvis miljøvariabel mangler
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
 export const dynamic = "force-dynamic";
 
-// ✅ Helper til billede-URL
 function getImageUrl(url) {
   if (!url) return "/imgs/placeholder.png";
   return url.startsWith("http") ? url : `${API}${url}`;
@@ -43,6 +41,7 @@ export default function ProductsPage() {
             price: item.Price,
             image: imageUrl,
             slug: item.slug,
+            colors: item.ColorChoose ?? [],
           };
         });
 
@@ -68,8 +67,6 @@ export default function ProductsPage() {
           Every item in our shop is a handcrafted experience. Designed for the
           inner circle, each drop is <strong>limited</strong>,{" "}
           <strong>made to order</strong>, and only available for a short time.
-          When you reserve an item, you're not just buying—you’re becoming part
-          of something rare. No mass production. No restocks.
         </p>
       </div>
 
@@ -91,15 +88,25 @@ export default function ProductsPage() {
               />
             </div>
             <div className="flex flex-col p-4 h-64">
-              <h2 className="text-lg font-semibold mb-2 transition-colors duration-200 group-hover:text-[var(--color-deep-wine)]">
+              <h2 className="text-lg font-semibold mb-2 group-hover:text-[var(--color-deep-wine)]">
                 {p.title}
               </h2>
               <p className="text-sm text-gray-600 whitespace-pre-line flex-grow">
                 {p.description}
               </p>
-              <p className="text-sm text-[var(--color-deep-wine)] mt-2">
-                Limited · Made to Order
-              </p>
+
+              {/* Farver som cirkler */}
+              <div className="flex gap-2 mt-2">
+                {p.colors.map((c) => (
+                  <span
+                    key={c.id}
+                    className="w-5 h-5 rounded-full border"
+                    title={c.name}
+                    style={{ backgroundColor: c.hex }}
+                  />
+                ))}
+              </div>
+
               <p className="text-xl font-bold mt-auto">{p.price} DKK</p>
             </div>
           </Link>

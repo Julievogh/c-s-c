@@ -12,7 +12,7 @@ export async function generateStaticParams() {
     const data = await res.json();
 
     return data.data.map((item) => ({
-      slug: item.slug, // ❗️ ingen `.attributes`
+      slug: item.slug,
     }));
   } catch (error) {
     console.error("Failed to fetch slugs:", error);
@@ -32,8 +32,8 @@ export default async function ProductPage({ params }) {
   const { data } = await res.json();
   if (!data.length) return notFound();
 
-  const prod = data[0]; // ❗️ brug direkte
-  const { Title, Description, Price, Image: imgObj, Colors } = prod;
+  const prod = data[0];
+  const { Title, Description, Price, Image: imgObj, ColorChoose } = prod;
 
   const description = Array.isArray(Description)
     ? Description.map((blk) =>
@@ -42,7 +42,11 @@ export default async function ProductPage({ params }) {
     : Description || "";
 
   const mainPath = imgObj?.formats?.small?.url ?? imgObj?.url ?? null;
-  const mainImage = mainPath ? `${API}${mainPath}` : "/imgs/placeholder.png";
+  const mainImage = mainPath?.startsWith("http")
+    ? mainPath
+    : mainPath
+      ? `${API}${mainPath}`
+      : "/imgs/placeholder.png";
 
   // Fetch other products
   const allRes = await fetch(`${API}/api/products?populate=*`, {
@@ -56,10 +60,16 @@ export default async function ProductPage({ params }) {
     .map((o) => {
       const img = o.Image;
       const path = img?.formats?.small?.url ?? img?.url ?? null;
+      const imageUrl = path?.startsWith("http")
+        ? path
+        : path
+          ? `${API}${path}`
+          : "/imgs/placeholder.png";
+
       return {
         title: o.Title,
         slug: o.slug,
-        imageUrl: path ? `${API}${path}` : "/imgs/placeholder.png",
+        imageUrl,
       };
     });
 
@@ -70,7 +80,7 @@ export default async function ProductPage({ params }) {
       description={description}
       imageUrl={mainImage}
       slug={slug}
-      colors={Colors}
+      colors={ColorChoose}
       others={others}
       note="Made to order. Limited edition drop—once it’s gone, it’s gone. Your order reserves your spot."
     />
