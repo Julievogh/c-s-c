@@ -7,11 +7,11 @@ module.exports = [
     config: {
       origin: [
         "http://localhost:3000",
-        "https://c-s-p2alm0kys-julievoghs-projects.vercel.app", // ← korrekt vercel domæne
+        "https://c-s-c.vercel.app", // Production
+        "https://c-s-p2alm0kys-julievoghs-projects.vercel.app", // Preview
       ],
       methods: ["GET", "POST", "PUT", "DELETE"],
       headers: "*",
-      credentials: true,
     },
   },
   "strapi::poweredBy",
