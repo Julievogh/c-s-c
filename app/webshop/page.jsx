@@ -29,8 +29,9 @@ export default function ProductsPage() {
             : "No description";
 
           const img = item.Image;
-          const path = img?.formats?.small?.url ?? img?.url;
-          const imageUrl = path ? `${API}${path}` : "/imgs/placeholder.png";
+          const imageUrl = img?.url?.startsWith("http")
+            ? img.url
+            : `${API}${img?.url ?? ""}`;
 
           return {
             id: item.id,
@@ -41,6 +42,7 @@ export default function ProductsPage() {
             slug: item.slug,
           };
         });
+
         setProducts(formatted);
       })
       .catch((err) => {
