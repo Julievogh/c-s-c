@@ -1,4 +1,3 @@
-// components/Header.jsx
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -35,14 +34,12 @@ export default function Header() {
       window.removeEventListener("scroll", onScroll, { passive: true });
   }, [scrolled]);
 
-  // Ultra-compact header when scrolled: remove vertical padding for minimal height
   const headerClasses = [
     "sticky top-0 w-full z-50 transition-all duration-300 backdrop-blur-sm",
     "bg-[var(--color-warm-white)]/70 font-karla",
     scrolled ? "py-0 shadow-md" : "py-4 shadow-lg",
   ].join(" ");
 
-  // Helper to check active link
   const isActive = (href) => pathname === href;
 
   return (
@@ -57,8 +54,8 @@ export default function Header() {
         {/* Desktop left links */}
         <div className="hidden md:flex space-x-8">
           {[
-            { href: "#popup", label: "Pop-up Experience" },
-            { href: "#fine-dining", label: "Fine-Dining" },
+            { href: "/calendar", label: "Pop-up Experience" },
+            { href: "/fine-dining", label: "Fine-Dining" },
             { href: "/blog", label: "Blog" },
           ].map(({ href, label }) => (
             <Link
@@ -72,7 +69,7 @@ export default function Header() {
           ))}
         </div>
 
-        {/* Logo with smooth scaling and fade */}
+        {/* Logo */}
         <Link href="/" className="flex-shrink-0">
           <Image
             src="/imgs/logo.svg"
@@ -88,8 +85,8 @@ export default function Header() {
         {/* Desktop right links */}
         <div className="hidden md:flex items-center space-x-8">
           {[
-            { href: "#your-event", label: "Your Event" },
-            { href: "#story", label: "The Story" },
+            { href: "/your-event", label: "Your Event" },
+            { href: "/#story", label: "The Story" },
           ].map(({ href, label }) => (
             <Link key={href} href={href} className="uppercase relative group">
               {label}
@@ -106,8 +103,8 @@ export default function Header() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8"
-          onClick={() => setMenuOpen((o) => !o)}
+          className="md:hidden flex flex-col justify-center items-center w-8 h-8 cursor-pointer"
+          onClick={() => setMenuOpen((prev) => !prev)}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           <span
@@ -128,21 +125,12 @@ export default function Header() {
         </button>
       </nav>
 
-      {/* Backdrop overlay for mobile menu */}
-      <div
-        className={`fixed inset-0 bg-black/50 transition-opacity ${
-          menuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-        onClick={() => setMenuOpen(false)}
+      {/* Slide-down mobile menu (below header) */}
+      <MobileMenu
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        scrolled={scrolled}
       />
-
-      {/* Wine-colored separator below nav, slightly shifted 
-      <div className="max-w-7xl mx-auto h-px bg-[var(--color-deep-wine)] -mt-1" />
-*/}
-      {/* Mobile menu panel */}
-      <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
     </header>
   );
 }
