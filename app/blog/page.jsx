@@ -1,11 +1,13 @@
-// app/blog/page.jsx
 import Image from "next/image";
 import Link from "next/link";
 
 export const revalidate = 0;
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
+
 export const dynamic = "force-dynamic";
 
+// ✅ Helper der sikrer vi ikke prepender Cloudinary-URL'er med localhost
 function getImageUrl(path) {
   if (!path) return "/imgs/placeholder.png";
   return path.startsWith("http") ? path : `${API_URL}${path}`;
@@ -13,43 +15,22 @@ function getImageUrl(path) {
 
 export default async function BlogPage() {
   let articles = [];
-  let json = null;
 
   try {
     const res = await fetch(
-      `${API_URL}/api/articles?sort=publishedAt:desc&populate[cover]=*&populate[author]=*&populate[category]=*`,
+      `${API_URL}/api/articles?populate[cover]=*&populate[author]=*&populate[category]=*&sort=publishedAt:desc`,
       { cache: "no-store" }
     );
-    if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-    json = await res.json();
-    console.log("🔥 STRAPI JSON", JSON.stringify(json, null, 2));
 
-    articles = json.data.map((entry) => {
-      const { id, attributes } = entry;
-      return {
-        id,
-        title: attributes.title,
-        slug: attributes.slug,
-        publishedAt: attributes.publishedAt,
-        cover: attributes.cover?.data?.attributes,
-        author: attributes.author?.data?.attributes,
-        category: attributes.category?.data?.attributes,
-      };
-    });
+    if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+    const json = await res.json();
+    articles = json.data;
   } catch (err) {
     console.error("Fejl ved hentning af blogindlæg:", err);
   }
 
   if (!articles.length) {
-    return (
-      <main className="p-8">
-        <h1 className="text-xl font-bold mb-4">No Articles Found</h1>
-        <p className="mb-2">Here's what Strapi returned:</p>
-        <pre className="text-sm bg-gray-100 p-4 rounded whitespace-pre-wrap">
-          {JSON.stringify(json, null, 2)}
-        </pre>
-      </main>
-    );
+    return <main className="p-8">Ingen blogindlæg fundet.</main>;
   }
 
   return (
@@ -73,24 +54,8 @@ export default async function BlogPage() {
                 <h2 className="font-display text-4xl text-center my-4">
                   {articles[0].title}
                 </h2>
-                <p className="text-center text-sm text-gray-500 mb-1">
-                  {new Date(articles[0].publishedAt).toLocaleDateString()}
-                </p>
                 <p className="text-center text-sm text-gray-500 mb-4">
-                  By{" "}
-                  <Link
-                    href={`/blog/author/${articles[0].author?.slug || ""}`}
-                    className="underline"
-                  >
-                    {articles[0].author?.name || "Unknown"}
-                  </Link>{" "}
-                  in{" "}
-                  <Link
-                    href={`/blog/category/${articles[0].category?.slug || ""}`}
-                    className="underline"
-                  >
-                    {articles[0].category?.name || "Uncategorized"}
-                  </Link>
+                  {new Date(articles[0].publishedAt).toLocaleDateString()}
                 </p>
                 {(() => {
                   const cover = articles[0].cover;
@@ -111,6 +76,126 @@ export default async function BlogPage() {
               </section>
             </Link>
           )}
+
+          <div className="flex justify-center mb-16">
+            <svg
+              width="100"
+              height="20"
+              fill="none"
+              stroke="var(--color-deep-wine)"
+            >
+              <path d="M0,10 C25,0 75,20 100,10" strokeWidth="2" />
+            </svg>
+          </div>
+
+          {/* Kategori-navigation */}
+          <nav className="flex justify-center gap-8 mb-8 text-xs uppercase tracking-wide">
+            {[
+              "Behind the Menu",
+              "Setting Your Holiday Table",
+              "Another Category",
+            ].map((cat) => (
+              <button
+                key={cat}
+                className="font-display hover:text-[color:var(--color-deep-wine)]"
+              >
+                {cat}
+              </button>
+            ))}
+          </nav>
+
+          {/* Indlæg side om side */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            {articles
+              .slice(1, 3)
+              .map(({ id, title, slug, cover, publishedAt }) => {
+                const imgPath = cover?.formats?.medium?.url || cover?.url;
+                return (
+                  <Link
+                    key={id}
+                    href={`/blog/${slug}`}
+                    className="block bg-[color:var(--color-soft-beige)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                  >
+                    {imgPath && (
+                      <Image
+                        src={getImageUrl(imgPath)}
+                        width={600}
+                        height={300}
+                        alt={title}
+                        className="w-full h-64 object-cover"
+                      />
+                    )}
+                    <div className="p-4">
+                      <p className="text-xs uppercase text-[color:var(--color-deep-wine)] tracking-wider">
+                        Featured
+                      </p>
+                      <h3 className="font-display text-2xl mt-2 mb-2">
+                        {title}
+                      </h3>
+                      <time className="block text-sm text-gray-500 mb-4">
+                        {new Date(publishedAt).toLocaleDateString()}
+                      </time>
+                      <div className="text-center">
+                        <span className="btn-primary btn px-6 py-2">
+                          Read More
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+          </section>
+
+          <div className="flex justify-center mb-16">
+            <svg
+              width="100"
+              height="20"
+              fill="none"
+              stroke="var(--color-deep-wine)"
+            >
+              <path d="M0,10 C25,20 75,0 100,10" strokeWidth="2" />
+            </svg>
+          </div>
+
+          {/* Arkiv-indlæg */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+            {articles
+              .slice(3, 9)
+              .map(({ id, title, slug, cover, publishedAt }) => {
+                const imgPath = cover?.formats?.small?.url || cover?.url;
+                return (
+                  <Link
+                    key={id}
+                    href={`/blog/${slug}`}
+                    className="block bg-[color:var(--color-soft-beige)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                  >
+                    {imgPath && (
+                      <Image
+                        src={getImageUrl(imgPath)}
+                        width={400}
+                        height={200}
+                        alt={title}
+                        className="w-full h-48 object-cover"
+                      />
+                    )}
+                    <div className="p-4">
+                      <p className="text-xs uppercase text-[color:var(--color-golden)] tracking-wider">
+                        Archive
+                      </p>
+                      <h4 className="font-display text-xl mt-1 mb-2">
+                        {title}
+                      </h4>
+                      <time className="block text-sm text-gray-500 mb-4">
+                        {new Date(publishedAt).toLocaleDateString()}
+                      </time>
+                      <span className="btn-outline btn px-5 py-1">
+                        Read More
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+          </section>
         </div>
       </div>
     </main>
