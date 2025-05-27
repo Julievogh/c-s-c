@@ -29,7 +29,7 @@ export default function CheckoutModal({ title, price, slug, onClose }) {
       <div className="bg-[color:var(--color-soft-beige)] bg-opacity-80 backdrop-blur-lg p-8 rounded-2xl w-full max-w-md shadow-xl relative border border-[color:var(--color-dark-espresso)]">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-[color:var(--color-dark-espresso)] text-xl hover:text-[color:var(--color-deep-wine)]"
+          className="absolute top-4 right-4 text-[color:var(--color-dark-espresso)] text-xl hover:text-[color:var(--color-deep-wine)] cursor-pointer"
         >
           ✕
         </button>
@@ -49,7 +49,7 @@ export default function CheckoutModal({ title, price, slug, onClose }) {
             </p>
             <button
               onClick={() => setStep(2)}
-              className="btn btn-primary w-full"
+              className="btn btn-primary w-full cursor-pointer"
             >
               Continue
             </button>
@@ -91,7 +91,7 @@ export default function CheckoutModal({ title, price, slug, onClose }) {
             <button
               onClick={placeOrder}
               disabled={!name || !email || !address || loading}
-              className="btn btn-secondary w-full disabled:opacity-50"
+              className="btn btn-secondary w-full disabled:opacity-50 cursor-pointer"
             >
               {loading ? "Submitting..." : "Reserve Now"}
             </button>
@@ -110,7 +110,10 @@ export default function CheckoutModal({ title, price, slug, onClose }) {
             <p className="text-sm text-[color:var(--color-dark-espresso)] mb-6">
               (Mock Order ID: <strong>{orderId}</strong>)
             </p>
-            <button onClick={onClose} className="btn btn-primary w-full">
+            <button
+              onClick={onClose}
+              className="btn btn-primary w-full cursor-pointer"
+            >
               Close
             </button>
           </>

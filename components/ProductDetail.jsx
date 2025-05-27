@@ -23,7 +23,7 @@ export default function ProductDetail({
     <main className="p-6 md:p-12 max-w-6xl mx-auto text-[color:var(--color-dark-espresso)] font-karla">
       <Link
         href="/webshop"
-        className="inline-block mb-8 text-sm text-[color:var(--color-dark-green)] hover:underline"
+        className="inline-block mb-8 text-sm text-[color:var(--color-dark-green)] hover:underline cursor-pointer"
       >
         ← Back to all products
       </Link>
@@ -67,7 +67,7 @@ export default function ProductDetail({
                     key={`${slug}-${color.name}-${color.hex}`}
                     onClick={() => setSelectedColor(color.hex)}
                     style={{ backgroundColor: color.hex }}
-                    className={`w-8 h-8 rounded-full border-2 transition-all duration-200 ${
+                    className={`w-8 h-8 rounded-full border-2 transition-all duration-200 cursor-pointer ${
                       selectedColor === color.hex
                         ? "border-[color:var(--color-dark-green)] scale-110"
                         : "border-white"
@@ -81,7 +81,7 @@ export default function ProductDetail({
 
           <button
             onClick={() => setShowModal(true)}
-            className="btn btn-primary w-fit"
+            className="btn btn-primary w-fit cursor-pointer"
           >
             Purchase
           </button>
@@ -113,7 +113,7 @@ export default function ProductDetail({
               <Link
                 key={o.slug}
                 href={`/webshop/${o.slug}`}
-                className="block border border-[color:var(--color-dark-espresso)] rounded-lg overflow-hidden hover:shadow-md transition bg-white"
+                className="block border border-[color:var(--color-dark-espresso)] rounded-lg overflow-hidden hover:shadow-md transition bg-white cursor-pointer"
               >
                 {o.imageUrl && (
                   <Image
