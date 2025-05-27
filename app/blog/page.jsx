@@ -18,10 +18,9 @@ export default async function BlogPage() {
 
   try {
     const res = await fetch(
-      `${API_URL}/api/articles?populate[cover]=*&populate[author]=*&populate[category]=*&sort=publishedAt:desc`,
+      `${API_URL}/api/articles?populate=cover&sort=publishedAt:desc`,
       { cache: "no-store" }
     );
-
     if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
     const json = await res.json();
     articles = json.data;
