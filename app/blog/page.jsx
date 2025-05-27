@@ -13,6 +13,7 @@ function getImageUrl(path) {
 
 export default async function BlogPage() {
   let articles = [];
+  let json = null;
 
   try {
     const res = await fetch(
@@ -20,7 +21,9 @@ export default async function BlogPage() {
       { cache: "no-store" }
     );
     if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-    const json = await res.json();
+    json = await res.json();
+    console.log("🔥 STRAPI JSON", JSON.stringify(json, null, 2));
+
     articles = json.data.map((entry) => {
       const { id, attributes } = entry;
       return {
@@ -38,7 +41,15 @@ export default async function BlogPage() {
   }
 
   if (!articles.length) {
-    return <main className="p-8">Ingen blogindlæg fundet.</main>;
+    return (
+      <main className="p-8">
+        <h1 className="text-xl font-bold mb-4">No Articles Found</h1>
+        <p className="mb-2">Here's what Strapi returned:</p>
+        <pre className="text-sm bg-gray-100 p-4 rounded whitespace-pre-wrap">
+          {JSON.stringify(json, null, 2)}
+        </pre>
+      </main>
+    );
   }
 
   return (
@@ -68,17 +79,17 @@ export default async function BlogPage() {
                 <p className="text-center text-sm text-gray-500 mb-4">
                   By{" "}
                   <Link
-                    href={`/blog/author/${articles[0].author?.slug}`}
+                    href={`/blog/author/${articles[0].author?.slug || ""}`}
                     className="underline"
                   >
-                    {articles[0].author?.name}
+                    {articles[0].author?.name || "Unknown"}
                   </Link>{" "}
                   in{" "}
                   <Link
-                    href={`/blog/category/${articles[0].category?.slug}`}
+                    href={`/blog/category/${articles[0].category?.slug || ""}`}
                     className="underline"
                   >
-                    {articles[0].category?.name}
+                    {articles[0].category?.name || "Uncategorized"}
                   </Link>
                 </p>
                 {(() => {
@@ -100,108 +111,6 @@ export default async function BlogPage() {
               </section>
             </Link>
           )}
-
-          <div className="flex justify-center mb-16">
-            <svg
-              width="100"
-              height="20"
-              fill="none"
-              stroke="var(--color-deep-wine)"
-            >
-              <path d="M0,10 C25,0 75,20 100,10" strokeWidth="2" />
-            </svg>
-          </div>
-
-          {/* Indlæg side om side */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            {articles.slice(1, 3).map((article) => {
-              const imgPath =
-                article.cover?.formats?.medium?.url || article.cover?.url;
-              return (
-                <Link
-                  key={article.id}
-                  href={`/blog/${article.slug}`}
-                  className="block bg-[color:var(--color-soft-beige)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
-                >
-                  {imgPath && (
-                    <Image
-                      src={getImageUrl(imgPath)}
-                      width={600}
-                      height={300}
-                      alt={article.title}
-                      className="w-full h-64 object-cover"
-                    />
-                  )}
-                  <div className="p-4">
-                    <p className="text-xs uppercase text-[color:var(--color-deep-wine)] tracking-wider mb-1">
-                      {article.category?.name} &nbsp;&bull;&nbsp;{" "}
-                      {article.author?.name}
-                    </p>
-                    <h3 className="font-display text-2xl mt-2 mb-2">
-                      {article.title}
-                    </h3>
-                    <time className="block text-sm text-gray-500 mb-4">
-                      {new Date(article.publishedAt).toLocaleDateString()}
-                    </time>
-                    <div className="text-center">
-                      <span className="btn-primary btn px-6 py-2">
-                        Read More
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </section>
-
-          <div className="flex justify-center mb-16">
-            <svg
-              width="100"
-              height="20"
-              fill="none"
-              stroke="var(--color-deep-wine)"
-            >
-              <path d="M0,10 C25,20 75,0 100,10" strokeWidth="2" />
-            </svg>
-          </div>
-
-          {/* Arkiv-indlæg */}
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
-            {articles.slice(3, 9).map((article) => {
-              const imgPath =
-                article.cover?.formats?.small?.url || article.cover?.url;
-              return (
-                <Link
-                  key={article.id}
-                  href={`/blog/${article.slug}`}
-                  className="block bg-[color:var(--color-soft-beige)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
-                >
-                  {imgPath && (
-                    <Image
-                      src={getImageUrl(imgPath)}
-                      width={400}
-                      height={200}
-                      alt={article.title}
-                      className="w-full h-48 object-cover"
-                    />
-                  )}
-                  <div className="p-4">
-                    <p className="text-xs uppercase text-[color:var(--color-golden)] tracking-wider mb-1">
-                      {article.category?.name} &nbsp;&bull;&nbsp;{" "}
-                      {article.author?.name}
-                    </p>
-                    <h4 className="font-display text-xl mt-1 mb-2">
-                      {article.title}
-                    </h4>
-                    <time className="block text-sm text-gray-500 mb-4">
-                      {new Date(article.publishedAt).toLocaleDateString()}
-                    </time>
-                    <span className="btn-outline btn px-5 py-1">Read More</span>
-                  </div>
-                </Link>
-              );
-            })}
-          </section>
         </div>
       </div>
     </main>
