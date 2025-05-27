@@ -1,6 +1,9 @@
 // components/Events.jsx
 "use client";
 
+import { useState } from "react";
+import EventSignupModal from "@/components/EventSignupModal";
+
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";

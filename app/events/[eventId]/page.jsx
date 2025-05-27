@@ -1,36 +1,28 @@
-// app/events/[eventId]/page.jsx
+"use client";
 
+import { useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { events } from "@/lib/events";
+import EventSignupModal from "@/components/EventSignupModal";
 
-// Tell Next.js what eventId values to pre‑render at build time
-export function generateStaticParams() {
-  return events.map((e) => ({ eventId: e.id }));
-}
+export default function EventPage() {
+  const params = useParams();
+  const eventId = params?.eventId;
+  const [showModal, setShowModal] = useState(false);
+  const [signupComplete, setSignupComplete] = useState(false);
 
-// Optional: dynamic page title & metadata
-export function generateMetadata({ params }) {
-  const event = events.find((e) => e.id === params.eventId);
-  return {
-    title: event ? event.title : "Event Not Found",
-    description: event ? event.description : "",
-  };
-}
-
-// The page component itself
-export default function EventPage({ params }) {
-  const { eventId } = params;
   const event = events.find((e) => e.id === eventId);
 
-  if (!event) {
+  if (!eventId || !event) {
     return (
-      <section className="px-6 py-12 text-center">
-        <h1 className="text-2xl font-semibold">Event Not Found</h1>
+      <section className="px-6 py-12 text-center text-[color:var(--color-dark-espresso)] font-karla">
+        <h1 className="text-2xl font-bold">Event Not Found</h1>
         <p className="mt-4">Sorry, we couldn’t find that event.</p>
         <Link
           href="/calendar"
-          className="mt-6 inline-block text-green-600 underline"
+          className="mt-6 inline-block text-[color:var(--color-dark-green)] underline"
         >
           Back to Calendar
         </Link>
@@ -38,7 +30,6 @@ export default function EventPage({ params }) {
     );
   }
 
-  // Format date nicely
   const eventDate = new Date(event.date).toLocaleDateString(undefined, {
     weekday: "long",
     year: "numeric",
@@ -49,15 +40,20 @@ export default function EventPage({ params }) {
   });
 
   return (
-    <section className="px-6 py-12 max-w-3xl mx-auto space-y-8">
-      <Link href="/calendar" className="text-sm text-green-600 hover:underline">
+    <section className="px-6 py-12 max-w-3xl mx-auto space-y-8 text-[color:var(--color-dark-espresso)] font-karla">
+      <Link
+        href="/calendar"
+        className="text-sm text-[color:var(--color-dark-green)] hover:underline"
+      >
         ← Back to Calendar
       </Link>
 
-      <h1 className="font-display text-4xl">{event.title}</h1>
-      <p className="text-gray-600">{eventDate}</p>
+      <h1 className="text-4xl font-hero-family">{event.title}</h1>
+      <p className="text-sm text-[color:var(--color-dark-green)]">
+        {eventDate}
+      </p>
 
-      <div className="relative w-full h-64 rounded-lg overflow-hidden">
+      <div className="relative w-full h-64 rounded-xl overflow-hidden shadow">
         <Image
           src={event.image}
           alt={event.title}
@@ -66,19 +62,43 @@ export default function EventPage({ params }) {
         />
       </div>
 
-      <p className="font-body leading-relaxed">{event.description}</p>
+      <p className="leading-relaxed">{event.description}</p>
 
-      {event.status === "sold out" ? (
-        <button
-          disabled
-          className="w-full bg-gray-300 text-gray-700 py-3 rounded-lg"
-        >
-          Sold Out
-        </button>
+      {signupComplete ? (
+        <div className="text-center text-[color:var(--color-dark-green)] font-display-family text-lg">
+          Thank you for signing up — you'll receive a confirmation email soon.
+        </div>
+      ) : event.status === "sold out" ? (
+        <div className="flex justify-center">
+          <button
+            disabled
+            className="px-5 py-2 rounded-full text-sm bg-gray-300 text-gray-600 font-display-family cursor-not-allowed"
+          >
+            Sold Out
+          </button>
+        </div>
       ) : (
-        <button className="w-full bg-green-600 text-white py-3 rounded-lg">
-          Sign Up
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="button"
+            className="btn btn-primary px-5 py-2 text-sm rounded-full cursor-pointer"
+            onClick={() => setShowModal(true)}
+          >
+            Sign Up
+          </button>
+        </div>
+      )}
+
+      {showModal && (
+        <EventSignupModal
+          eventTitle={event.title}
+          eventId={event.id}
+          onClose={() => setShowModal(false)}
+          onSuccess={() => {
+            setShowModal(false);
+            setSignupComplete(true);
+          }}
+        />
       )}
     </section>
   );
