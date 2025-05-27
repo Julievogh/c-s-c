@@ -1,12 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
-export const dynamic = "force-dynamic"; // Important for Vercel deployment
+export const dynamic = "force-dynamic"; // Vigtigt for Vercel
 
-// Helper function to ensure image URLs are correctly formatted
+// ✅ Helper som tjekker om billedets URL allerede er absolut
 function getImageUrl(path) {
   if (!path) return "/imgs/placeholder.png";
   return path.startsWith("http") ? path : `${API_URL}${path}`;
@@ -16,7 +15,7 @@ export async function generateStaticParams() {
   try {
     const res = await fetch(`${API_URL}/api/articles`);
     if (!res.ok) {
-      console.error("Error fetching articles:", res.statusText);
+      console.error("Fejl ved hentning af artikler:", res.statusText);
       return [];
     }
     const { data } = await res.json();
@@ -24,7 +23,7 @@ export async function generateStaticParams() {
       slug: item.attributes.slug,
     }));
   } catch (error) {
-    console.error("Error in generateStaticParams:", error);
+    console.error("Fejl i generateStaticParams:", error);
     return [];
   }
 }
@@ -40,8 +39,7 @@ export default async function ArticlePage({ params }) {
     const { data } = await res.json();
     if (!data.length) return notFound();
 
-    const { title, description, publishedAt, cover, longtext } =
-      data[0].attributes;
+    const { title, description, publishedAt, cover, longtext } = data[0];
     const src = cover?.formats?.large?.url || cover?.url;
 
     return (
@@ -80,7 +78,16 @@ export default async function ArticlePage({ params }) {
 
             {Array.isArray(longtext) && longtext.length > 0 && (
               <div className="prose max-w-prose mx-auto mb-16">
-                <BlocksRenderer content={longtext} />
+                {longtext.map((item, index) => {
+                  if (item.type === "paragraph") {
+                    return <p key={index}>{item.children?.[0]?.text || ""}</p>;
+                  } else if (item.type === "heading") {
+                    return (
+                      <h2 key={index}>{item.children?.[0]?.text || ""}</h2>
+                    );
+                  }
+                  return null;
+                })}
               </div>
             )}
           </div>
@@ -88,7 +95,7 @@ export default async function ArticlePage({ params }) {
       </main>
     );
   } catch (err) {
-    console.error("Error in ArticlePage:", err);
+    console.error("Fejl i ArticlePage:", err);
     return notFound();
   }
 }
