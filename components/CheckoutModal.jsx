@@ -25,8 +25,8 @@ export default function CheckoutModal({ title, price, slug, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-[color:var(--color-soft-beige)] p-8 rounded-2xl w-full max-w-md shadow-xl relative border border-[color:var(--color-dark-espresso)]">
+    <div className="fixed inset-0 bg-white/10 backdrop-blur-md flex items-center justify-center p-4 z-50">
+      <div className="bg-[color:var(--color-soft-beige)] bg-opacity-80 backdrop-blur-lg p-8 rounded-2xl w-full max-w-md shadow-xl relative border border-[color:var(--color-dark-espresso)]">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-[color:var(--color-dark-espresso)] text-xl hover:text-[color:var(--color-deep-wine)]"
