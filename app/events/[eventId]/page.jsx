@@ -20,11 +20,8 @@ export default function EventPage() {
       <section className="px-6 py-12 text-center text-[color:var(--color-dark-espresso)] font-karla">
         <h1 className="text-2xl font-bold">Event Not Found</h1>
         <p className="mt-4">Sorry, we couldn’t find that event.</p>
-        <Link
-          href="/calendar"
-          className="mt-6 inline-block text-[color:var(--color-dark-green)] underline"
-        >
-          Back to Calendar
+        <Link href="/calendar" className="btn btn-outline">
+          ← Back to Calendar
         </Link>
       </section>
     );
@@ -43,7 +40,7 @@ export default function EventPage() {
     <section className="px-6 py-12 max-w-3xl mx-auto space-y-8 text-[color:var(--color-dark-espresso)] font-karla">
       <Link
         href="/calendar"
-        className="text-sm text-[color:var(--color-dark-green)] hover:underline"
+        className="text-sm text-[color:var(--color-dark-green)]  hover:underline"
       >
         ← Back to Calendar
       </Link>
